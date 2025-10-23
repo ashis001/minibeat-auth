@@ -23,6 +23,25 @@ Enterprise-grade OAuth2 + JWT authentication and license management system built
 └─────────────────────────────────────────────────────────┘
 ```
 
+## ⚠️ Critical Deployment Notes
+
+### For New Server Deployments
+
+1. **bcrypt Compatibility**: `requirements.txt` pins `bcrypt==3.2.2` for compatibility with `passlib`. Do NOT upgrade bcrypt without testing.
+
+2. **ALLOWED_ORIGINS Format**: Must be JSON array in `.env`:
+   ```bash
+   ALLOWED_ORIGINS=["http://server-ip:5173","http://localhost:5173"]
+   ```
+
+3. **Required .env Files** (NOT in git):
+   - `backend/.env` - Backend configuration
+   - `admin-ui/.env` - Frontend API URL
+
+4. **Docker Build**: Use `docker-compose up -d --build` to ensure dependencies are installed correctly.
+
+5. **Database Persistence**: Use `docker-compose down -v` only if you want to reset the database (removes volumes).
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -38,21 +57,37 @@ cd /Users/nitishpradhan/Documents/data-deployer-auth
 
 ### 2. Configure Environment
 
-**Backend:**
+**Backend (.env):**
 ```bash
 cd backend
 cp .env.example .env
 # Edit .env and set:
-# - SECRET_KEY (generate with: openssl rand -hex 32)
-# - ADMIN_EMAIL and ADMIN_PASSWORD
 ```
 
-**Frontend:**
+**CRITICAL:** `ALLOWED_ORIGINS` must be in JSON array format:
+```bash
+# ✅ CORRECT FORMAT:
+ALLOWED_ORIGINS=["http://your-server-ip:5173","http://localhost:5173"]
+
+# ❌ WRONG (comma-separated won't work):
+# ALLOWED_ORIGINS=http://server:5173,http://localhost:5173
+```
+
+**Required Settings:**
+- `SECRET_KEY`: Generate with `openssl rand -hex 32`
+- `ALLOWED_ORIGINS`: JSON array with frontend URLs
+- `ADMIN_EMAIL` and `ADMIN_PASSWORD`: Initial admin credentials
+- `DATABASE_URL`: Use service name `auth-postgres` in Docker
+- `REDIS_URL`: Use service name `auth-redis` in Docker
+
+**Frontend (.env):**
 ```bash
 cd admin-ui
 cp .env.example .env
-# Set VITE_API_URL if backend is on different host
 ```
+
+**Required Settings:**
+- `VITE_API_URL`: Backend API URL (e.g., `http://your-server-ip:8000`)
 
 ### 3. Run with Docker
 
