@@ -34,13 +34,8 @@ services:
   backend:
     build: ./backend
     container_name: auth-backend
-    environment:
-      DATABASE_URL: postgresql://auth_user:auth_password@postgres:5432/auth_db
-      REDIS_URL: redis://redis:6379/0
-      SECRET_KEY: ${SECRET_KEY:-your-secret-key-change-in-production}
-      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-changeme123}
-      DEBUG: ${DEBUG:-True}
+    env_file:
+      - ./backend/.env
     ports:
       - "8000:8000"
     depends_on:
@@ -55,6 +50,8 @@ services:
   admin-ui:
     build: ./admin-ui
     container_name: auth-admin-ui
+    env_file:
+      - ./admin-ui/.env
     ports:
       - "5173:80"
     depends_on:
