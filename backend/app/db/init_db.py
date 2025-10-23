@@ -28,26 +28,35 @@ def init_db():
             logger.info("⚠️ Admin user already exists, skipping initialization")
             return
         
-        # Create default organization
+        # Get or create default organization
         logger.info("Creating default organization...")
-        default_org = Organization(
-            name="Default Organization",
-            license_type=LicenseType.TRIAL,
-            license_expires_at=datetime.utcnow() + timedelta(days=30),
-            max_users=10,
-            features_enabled=["validator", "migrator", "reconciliator"],
-            allowed_ips=[]  # Empty means no IP restriction
-        )
-        db.add(default_org)
-        db.commit()
-        db.refresh(default_org)
-        logger.info(f"✅ Created organization: {default_org.name}")
+        default_org = db.query(Organization).filter(Organization.name == "Default Organization").first()
+        
+        if not default_org:
+            default_org = Organization(
+                name="Default Organization",
+                license_type=LicenseType.TRIAL,
+                license_expires_at=datetime.utcnow() + timedelta(days=30),
+                max_users=10,
+                features_enabled=["validator", "migrator", "reconciliator"],
+                allowed_ips=[]  # Empty means no IP restriction
+            )
+            db.add(default_org)
+            db.commit()
+            db.refresh(default_org)
+            logger.info(f"✅ Created organization: {default_org.name}")
+        else:
+            logger.info(f"✅ Using existing organization: {default_org.name}")
+        
+        # Truncate password to 72 bytes for bcrypt compatibility
+        password = settings.ADMIN_PASSWORD.strip()[:72]
+        logger.info(f"Password length: {len(password)} characters")
         
         # Create admin user
         logger.info("Creating admin user...")
         admin_user = User(
             email=settings.ADMIN_EMAIL,
-            password_hash=get_password_hash(settings.ADMIN_PASSWORD),
+            password_hash=get_password_hash(password),
             full_name="System Administrator",
             role=UserRole.ADMIN,
             organization_id=default_org.id,
