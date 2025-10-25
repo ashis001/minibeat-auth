@@ -63,8 +63,13 @@ export const authApi = {
     return response.data;
   },
 
-  logout: async (userId: string) => {
-    await authClient.post('/auth/logout', { user_id: userId });
+  logout: async () => {
+    try {
+      await authClient.post('/auth/logout');
+    } catch (error) {
+      // Ignore logout errors, just clear local storage
+      console.error('Logout error:', error);
+    }
     localStorage.clear();
   },
 

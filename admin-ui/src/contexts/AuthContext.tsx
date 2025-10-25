@@ -65,10 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = async () => {
-    if (user) {
-      await authApi.logout(user.id);
-    }
-    
+    await authApi.logout();
     setUser(null);
     setLicense(null);
     localStorage.clear();
