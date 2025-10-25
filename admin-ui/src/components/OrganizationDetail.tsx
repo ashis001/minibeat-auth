@@ -184,6 +184,19 @@ export const OrganizationDetail: React.FC = () => {
     }
   };
 
+  const toggleOrganizationStatus = async () => {
+    try {
+      await organizationApi.updateOrganization(id!, {
+        is_active: !organization?.is_active
+      });
+      fetchOrganization();
+      alert(`Organization ${!organization?.is_active ? 'resumed' : 'paused'} successfully`);
+    } catch (error: any) {
+      console.error('Failed to toggle organization status:', error);
+      alert('Failed to update organization status');
+    }
+  };
+
   if (loading || !organization) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -288,13 +301,35 @@ export const OrganizationDetail: React.FC = () => {
             <p className="text-sm text-slate-400">Organization Details</p>
           </div>
         </div>
-        <button 
-          onClick={openEditOrgModal}
-          className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
-        >
-          <Edit className="w-4 h-4" />
-          Edit Organization
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleOrganizationStatus}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              organization.is_active
+                ? 'bg-orange-500 hover:bg-orange-600 text-white'
+                : 'bg-blue-500 hover:bg-blue-600 text-white'
+            }`}
+          >
+            {organization.is_active ? (
+              <>
+                <XCircle className="w-4 h-4" />
+                Pause Organization
+              </>
+            ) : (
+              <>
+                <CheckCircle className="w-4 h-4" />
+                Resume Organization
+              </>
+            )}
+          </button>
+          <button 
+            onClick={openEditOrgModal}
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+          >
+            <Edit className="w-4 h-4" />
+            Edit Organization
+          </button>
+        </div>
       </div>
 
       {/* Overview Cards */}

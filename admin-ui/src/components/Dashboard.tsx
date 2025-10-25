@@ -4,7 +4,8 @@ import { useLocation } from 'react-router-dom';
 import { OrganizationSettings } from './OrganizationSettings';
 import { Home } from './Home';
 import { DatabaseViewer } from './DatabaseViewer';
-import { Users, Building2, LogOut, Home as HomeIcon, Sparkles, Database } from 'lucide-react';
+import { Monitor } from './Monitor';
+import { Users, Building2, LogOut, Home as HomeIcon, Sparkles, Database, Activity } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
@@ -26,6 +27,7 @@ export const Dashboard: React.FC = () => {
   const tabs = [
     { id: 'home', label: 'Dashboard', icon: HomeIcon, adminOnly: false },
     { id: 'organizations', label: 'Organizations', icon: Building2, adminOnly: true },
+    { id: 'monitor', label: 'Monitor', icon: Activity, adminOnly: true },
     { id: 'database', label: 'Database', icon: Database, adminOnly: true },
   ];
 
@@ -98,6 +100,7 @@ export const Dashboard: React.FC = () => {
         <div className="p-8">
           {activeTab === 'home' && <Home />}
           {activeTab === 'organizations' && isAdmin && <OrganizationSettings />}
+          {activeTab === 'monitor' && isAdmin && <Monitor />}
           {activeTab === 'database' && isAdmin && <DatabaseViewer />}
         </div>
       </main>
