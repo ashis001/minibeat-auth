@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { OrganizationSettings } from './OrganizationSettings';
-import { LicenseStatus } from './LicenseStatus';
 import { Home } from './Home';
 import { DatabaseViewer } from './DatabaseViewer';
-import { Users, Building2, Shield, LogOut, Home as HomeIcon, Sparkles, Database } from 'lucide-react';
+import { Users, Building2, LogOut, Home as HomeIcon, Sparkles, Database } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
@@ -19,7 +18,6 @@ export const Dashboard: React.FC = () => {
     { id: 'home', label: 'Dashboard', icon: HomeIcon, adminOnly: false },
     { id: 'organizations', label: 'Organizations', icon: Building2, adminOnly: true },
     { id: 'database', label: 'Database', icon: Database, adminOnly: true },
-    { id: 'license', label: 'License', icon: Shield, adminOnly: false },
   ];
 
   const isAdmin = user?.role === 'admin';
@@ -92,7 +90,6 @@ export const Dashboard: React.FC = () => {
           {activeTab === 'home' && <Home />}
           {activeTab === 'organizations' && isAdmin && <OrganizationSettings />}
           {activeTab === 'database' && isAdmin && <DatabaseViewer />}
-          {activeTab === 'license' && <LicenseStatus />}
         </div>
       </main>
     </div>
