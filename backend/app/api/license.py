@@ -13,6 +13,40 @@ router = APIRouter(prefix="/license", tags=["License"])
 security = HTTPBearer()
 
 
+@router.get("/organization/status/{org_id}")
+async def check_organization_status(
+    org_id: UUID,
+    db: Session = Depends(get_db)
+):
+    """Check if organization is active and can use MiniBeast"""
+    
+    org = db.query(Organization).filter(Organization.id == org_id).first()
+    if not org:
+        raise HTTPException(status_code=404, detail="Organization not found")
+    
+    # Check if organization is paused
+    if not org.is_active:
+        return {
+            "status": "paused",
+            "message": "Your organization is paused. Please contact Dataction to use MiniBeast.",
+            "can_access": False
+        }
+    
+    # Check if license is expired
+    if not org.is_license_valid():
+        return {
+            "status": "expired",
+            "message": "Your organization's license has expired. Please contact Dataction to renew.",
+            "can_access": False
+        }
+    
+    return {
+        "status": "active",
+        "message": "Organization is active",
+        "can_access": True
+    }
+
+
 async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db)
