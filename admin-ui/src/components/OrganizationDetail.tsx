@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { organizationApi, userApi } from '@/api/authClient';
-import { ArrowLeft, Users, Shield, Activity, Edit, Plus, Trash2, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { ArrowLeft, Users, Shield, Activity, Edit, Plus, Trash2, CheckCircle, XCircle, Clock, Building2, LogOut, Home as HomeIcon, Sparkles } from 'lucide-react';
 import axios from 'axios';
 
 interface Organization {
@@ -141,9 +142,70 @@ export const OrganizationDetail: React.FC = () => {
 
   const daysRemaining = Math.floor((new Date(organization.license_expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
   const isExpiringSoon = daysRemaining <= 30;
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    window.location.href = '/login';
+  };
+
+  const tabs = [
+    { id: 'home', label: 'Dashboard', icon: HomeIcon, adminOnly: false },
+    { id: 'organizations', label: 'Organizations', icon: Building2, adminOnly: true },
+    { id: 'license', label: 'License', icon: Shield, adminOnly: false },
+  ];
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen flex bg-slate-950">
+      {/* Sidebar */}
+      <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col">
+        <div className="p-6 border-b border-slate-800">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-white">MiniBeast</h1>
+              <p className="text-xs text-emerald-400">Auth Portal</p>
+            </div>
+          </div>
+        </div>
+
+        <nav className="flex-1 p-4 space-y-2">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => navigate('/dashboard')}
+              className="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+            >
+              <tab.icon className="w-5 h-5" />
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </nav>
+
+        <div className="p-4 border-t border-slate-800 space-y-3">
+          <div className="px-4 py-3 bg-slate-800 rounded-lg">
+            <p className="text-sm font-medium text-white">{user?.full_name}</p>
+            <p className="text-xs text-slate-400">{user?.email}</p>
+            <span className="inline-block mt-2 px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs capitalize">
+              {user?.role}
+            </span>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+          >
+            <LogOut className="w-5 h-5" />
+            <span>Logout</span>
+          </button>
+          <p className="text-xs text-slate-500 text-center">© 2025 MiniBeast</p>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto">
+        <div className="p-8 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -423,5 +485,7 @@ export const OrganizationDetail: React.FC = () => {
         </div>
       )}
     </div>
-  );
-};
+  </main>
+</div>
+);
+}; 
