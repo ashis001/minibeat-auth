@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { organizationApi } from '@/api/authClient';
-import { Building2, Plus, Calendar, Users, Eye, CheckCircle } from 'lucide-react';
+import { Plus, Calendar, Users, Eye } from 'lucide-react';
 
 interface Organization {
   id: string;
