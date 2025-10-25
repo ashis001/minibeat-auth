@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { UserManagement } from './UserManagement';
 import { OrganizationSettings } from './OrganizationSettings';
 import { LicenseStatus } from './LicenseStatus';
 import { Home } from './Home';
@@ -17,7 +16,6 @@ export const Dashboard: React.FC = () => {
 
   const tabs = [
     { id: 'home', label: 'Dashboard', icon: HomeIcon, adminOnly: false },
-    { id: 'users', label: 'Users', icon: Users, adminOnly: true },
     { id: 'organizations', label: 'Organizations', icon: Building2, adminOnly: true },
     { id: 'license', label: 'License', icon: Shield, adminOnly: false },
   ];
@@ -90,7 +88,6 @@ export const Dashboard: React.FC = () => {
       <main className="flex-1 overflow-auto">
         <div className="p-8">
           {activeTab === 'home' && <Home />}
-          {activeTab === 'users' && isAdmin && <UserManagement />}
           {activeTab === 'organizations' && isAdmin && <OrganizationSettings />}
           {activeTab === 'license' && <LicenseStatus />}
         </div>
