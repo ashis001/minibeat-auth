@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { organizationApi } from '@/api/authClient';
 import { Plus, Edit, Calendar, Users } from 'lucide-react';
-import { format } from 'date-fns';
 
 interface Organization {
   id: string;

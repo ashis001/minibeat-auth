@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { userApi, organizationApi } from '@/api/authClient';
-import { Plus, Trash2, Edit, CheckCircle, XCircle } from 'lucide-react';
+import { Plus, Trash2, CheckCircle, XCircle } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface User {
