@@ -27,7 +27,7 @@ interface RecentActivity {
 
 export const Monitor: React.FC = () => {
   const [stats, setStats] = useState<SystemStats | null>(null);
-  const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
+  const [recentActivity] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
