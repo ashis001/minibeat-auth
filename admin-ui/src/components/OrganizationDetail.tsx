@@ -144,13 +144,24 @@ export const OrganizationDetail: React.FC = () => {
   const handleEditOrganization = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await organizationApi.updateOrganization(id!, editOrgData);
+      // Convert date string to ISO datetime format
+      const updateData = {
+        ...editOrgData,
+        license_expires_at: editOrgData.license_expires_at 
+          ? new Date(editOrgData.license_expires_at + 'T23:59:59').toISOString()
+          : editOrgData.license_expires_at
+      };
+      
+      await organizationApi.updateOrganization(id!, updateData);
       setShowEditOrgModal(false);
       fetchOrganization();
       alert('Organization updated successfully');
     } catch (error: any) {
       console.error('Failed to update organization:', error);
-      alert(error.response?.data?.detail || 'Failed to update organization');
+      const errorMessage = error.response?.data?.detail 
+        || error.message 
+        || JSON.stringify(error.response?.data || 'Failed to update organization');
+      alert(errorMessage);
     }
   };
 
