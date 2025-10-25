@@ -554,14 +554,13 @@ export const OrganizationDetail: React.FC = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">Role</label>
-                <select
-                  value={newUser.role}
-                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
-                >
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
-                </select>
+                <input
+                  type="text"
+                  disabled
+                  value="User"
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-slate-500"
+                />
+                <p className="text-xs text-slate-500 mt-1">Organization users are assigned User role by default</p>
               </div>
               <div className="flex gap-3 mt-6">
                 <button
