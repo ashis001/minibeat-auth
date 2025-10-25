@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { organizationApi, userApi } from '@/api/authClient';
 import { useAuth } from '@/contexts/AuthContext';
-import { ArrowLeft, Users, Shield, Activity, Edit, Plus, Trash2, CheckCircle, XCircle, Clock, Building2, LogOut, Home as HomeIcon, Sparkles } from 'lucide-react';
+import { ArrowLeft, Users, Shield, Activity, Edit, Plus, Trash2, CheckCircle, XCircle, Clock, Building2, LogOut, Home as HomeIcon, Sparkles, Database } from 'lucide-react';
 import axios from 'axios';
 
 interface Organization {
@@ -172,8 +172,10 @@ export const OrganizationDetail: React.FC = () => {
   const tabs = [
     { id: 'home', label: 'Dashboard', icon: HomeIcon, adminOnly: false },
     { id: 'organizations', label: 'Organizations', icon: Building2, adminOnly: true },
-    { id: 'license', label: 'License', icon: Shield, adminOnly: false },
+    { id: 'database', label: 'Database', icon: Database, adminOnly: true },
   ];
+
+  const isAdmin = user?.role === 'admin';
 
   return (
     <div className="min-h-screen flex bg-slate-950">
@@ -192,11 +194,15 @@ export const OrganizationDetail: React.FC = () => {
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
-          {tabs.map((tab) => (
+          {tabs.filter(tab => !tab.adminOnly || isAdmin).map((tab) => (
             <button
               key={tab.id}
               onClick={() => navigate('/dashboard', { state: { activeTab: tab.id } })}
-              className="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                tab.id === 'organizations'
+                  ? 'bg-emerald-500/20 text-emerald-400 border-l-4 border-emerald-500'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
             >
               <tab.icon className="w-5 h-5" />
               <span>{tab.label}</span>
