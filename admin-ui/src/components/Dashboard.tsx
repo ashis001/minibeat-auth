@@ -3,7 +3,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { OrganizationSettings } from './OrganizationSettings';
 import { LicenseStatus } from './LicenseStatus';
 import { Home } from './Home';
-import { Users, Building2, Shield, LogOut, Home as HomeIcon, Sparkles } from 'lucide-react';
+import { DatabaseViewer } from './DatabaseViewer';
+import { Users, Building2, Shield, LogOut, Home as HomeIcon, Sparkles, Database } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
@@ -17,6 +18,7 @@ export const Dashboard: React.FC = () => {
   const tabs = [
     { id: 'home', label: 'Dashboard', icon: HomeIcon, adminOnly: false },
     { id: 'organizations', label: 'Organizations', icon: Building2, adminOnly: true },
+    { id: 'database', label: 'Database', icon: Database, adminOnly: true },
     { id: 'license', label: 'License', icon: Shield, adminOnly: false },
   ];
 
@@ -89,6 +91,7 @@ export const Dashboard: React.FC = () => {
         <div className="p-8">
           {activeTab === 'home' && <Home />}
           {activeTab === 'organizations' && isAdmin && <OrganizationSettings />}
+          {activeTab === 'database' && isAdmin && <DatabaseViewer />}
           {activeTab === 'license' && <LicenseStatus />}
         </div>
       </main>

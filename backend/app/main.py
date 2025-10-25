@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.api import auth, admin, license, stats, audit
+from app.api import auth, admin, license, stats, audit, database
 
 app = FastAPI(
     title="Data Deployer Auth Server",
@@ -24,6 +24,7 @@ app.include_router(admin.router)
 app.include_router(license.router)
 app.include_router(stats.router)
 app.include_router(audit.router)
+app.include_router(database.router)
 
 
 @app.get("/")
