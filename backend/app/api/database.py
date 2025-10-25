@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List, Dict, Any
 from app.db.database import get_db
 from app.models.user import User, UserRole
-from app.api.dependencies import get_current_admin
+from app.api.admin import get_current_admin
 from pydantic import BaseModel
 
 router = APIRouter(prefix="/database", tags=["database"])
