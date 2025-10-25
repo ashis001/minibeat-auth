@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { organizationApi } from '@/api/authClient';
-import { Plus, Edit, Calendar, Users, Eye } from 'lucide-react';
+import { Building2, Plus, Calendar, Users, Eye, CheckCircle } from 'lucide-react';
 
 interface Organization {
   id: string;
@@ -90,18 +90,6 @@ export const OrganizationSettings: React.FC = () => {
     });
   };
 
-  const openEditModal = (org: Organization) => {
-    setEditingOrg(org);
-    setFormData({
-      name: org.name,
-      license_type: org.license_type,
-      license_expires_at: org.license_expires_at.split('T')[0],
-      max_users: org.max_users,
-      features_enabled: org.features_enabled,
-      allowed_ips: org.allowed_ips,
-    });
-  };
-
   const toggleFeature = (feature: string) => {
     setFormData(prev => ({
       ...prev,
@@ -162,21 +150,13 @@ export const OrganizationSettings: React.FC = () => {
                     {org.license_type.toUpperCase()}
                   </span>
                 </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => navigate(`/organizations/${org.id}`)}
-                    className="flex items-center gap-2 px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors text-sm"
-                  >
-                    <Eye className="w-4 h-4" />
-                    View
-                  </button>
-                  <button
-                    onClick={() => openEditModal(org)}
-                    className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
-                  >
-                    <Edit className="w-4 h-4 text-slate-400" />
-                  </button>
-                </div>
+                <button
+                  onClick={() => navigate(`/organizations/${org.id}`)}
+                  className="flex items-center gap-2 px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors text-sm"
+                >
+                  <Eye className="w-4 h-4" />
+                  View
+                </button>
               </div>
 
               <div className="space-y-3">

@@ -45,6 +45,8 @@ export const OrganizationDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [newUser, setNewUser] = useState({ email: '', full_name: '', password: '', role: 'user' });
+  const [showEditOrgModal, setShowEditOrgModal] = useState(false);
+  const [editOrgData, setEditOrgData] = useState({ name: '', max_users: 5 });
 
   useEffect(() => {
     fetchOrganization();
@@ -129,6 +131,29 @@ export const OrganizationDetail: React.FC = () => {
     } catch (error: any) {
       console.error('Failed to create user:', error);
       alert(error.response?.data?.detail || 'Failed to create user');
+    }
+  };
+
+  const openEditOrgModal = () => {
+    if (organization) {
+      setEditOrgData({
+        name: organization.name,
+        max_users: organization.max_users
+      });
+      setShowEditOrgModal(true);
+    }
+  };
+
+  const handleEditOrganization = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await organizationApi.updateOrganization(id!, editOrgData);
+      setShowEditOrgModal(false);
+      fetchOrganization();
+      alert('Organization updated successfully');
+    } catch (error: any) {
+      console.error('Failed to update organization:', error);
+      alert(error.response?.data?.detail || 'Failed to update organization');
     }
   };
 
@@ -220,7 +245,10 @@ export const OrganizationDetail: React.FC = () => {
             <p className="text-sm text-slate-400">Organization Details</p>
           </div>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors">
+        <button 
+          onClick={openEditOrgModal}
+          className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+        >
           <Edit className="w-4 h-4" />
           Edit Organization
         </button>
@@ -478,6 +506,53 @@ export const OrganizationDetail: React.FC = () => {
                   className="flex-1 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
                 >
                   Create User
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Organization Modal */}
+      {showEditOrgModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-slate-800 rounded-lg p-6 w-full max-w-md border border-slate-700">
+            <h2 className="text-xl font-bold text-white mb-4">Edit Organization</h2>
+            <form onSubmit={handleEditOrganization} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Organization Name</label>
+                <input
+                  type="text"
+                  required
+                  value={editOrgData.name}
+                  onChange={(e) => setEditOrgData({ ...editOrgData, name: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Max Users</label>
+                <input
+                  type="number"
+                  required
+                  min="1"
+                  value={editOrgData.max_users}
+                  onChange={(e) => setEditOrgData({ ...editOrgData, max_users: parseInt(e.target.value) })}
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <div className="flex gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setShowEditOrgModal(false)}
+                  className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+                >
+                  Update
                 </button>
               </div>
             </form>
