@@ -172,7 +172,6 @@ export const OrganizationDetail: React.FC = () => {
     try {
       await userApi.updateUser(editingUser.id, {
         full_name: editingUser.full_name,
-        role: editingUser.role,
         is_active: editingUser.is_active
       });
       setShowEditUserModal(false);
@@ -688,14 +687,13 @@ export const OrganizationDetail: React.FC = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">Role</label>
-                <select
+                <input
+                  type="text"
+                  disabled
                   value={editingUser.role}
-                  onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
-                >
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
-                </select>
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-slate-500 capitalize"
+                />
+                <p className="text-xs text-slate-500 mt-1">Role cannot be changed from UI for security</p>
               </div>
               <div>
                 <label className="flex items-center gap-2 cursor-pointer">
