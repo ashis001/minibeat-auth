@@ -50,12 +50,18 @@ export const OrganizationSettings: React.FC = () => {
   const handleCreateOrganization = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await organizationApi.createOrganization(formData);
+      // Convert date to ISO datetime format
+      const payload = {
+        ...formData,
+        license_expires_at: new Date(formData.license_expires_at).toISOString()
+      };
+      await organizationApi.createOrganization(payload);
       setShowCreateModal(false);
       resetForm();
       loadOrganizations();
     } catch (error: any) {
-      alert(error.response?.data?.detail || 'Failed to create organization');
+      const errorMsg = error.response?.data?.detail || 'Failed to create organization';
+      alert(typeof errorMsg === 'string' ? errorMsg : JSON.stringify(errorMsg));
     }
   };
 
