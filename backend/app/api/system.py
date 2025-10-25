@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from app.db.database import get_db
 from app.models.user import User, UserRole
 from app.models.organization import Organization
-from app.core.security import get_current_admin
+from app.api.admin import get_current_admin
 
 router = APIRouter()
 
