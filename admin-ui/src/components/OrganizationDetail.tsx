@@ -46,6 +46,8 @@ export const OrganizationDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [newUser, setNewUser] = useState({ email: '', full_name: '', password: '', role: 'user' });
+  const [showEditUserModal, setShowEditUserModal] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
   const [showEditOrgModal, setShowEditOrgModal] = useState(false);
   const [editOrgData, setEditOrgData] = useState({
     name: '',
@@ -152,6 +154,26 @@ export const OrganizationDetail: React.FC = () => {
     }
   };
 
+  const handleEditUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingUser) return;
+    
+    try {
+      await userApi.updateUser(editingUser.id, {
+        full_name: editingUser.full_name,
+        role: editingUser.role,
+        is_active: editingUser.is_active
+      });
+      setShowEditUserModal(false);
+      setEditingUser(null);
+      fetchUsers();
+      alert('User updated successfully');
+    } catch (error: any) {
+      console.error('Failed to update user:', error);
+      alert(error.response?.data?.detail || 'Failed to update user');
+    }
+  };
+
   if (loading || !organization) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -181,51 +203,61 @@ export const OrganizationDetail: React.FC = () => {
     <div className="min-h-screen flex bg-slate-950">
       {/* Sidebar */}
       <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col">
+        {/* Logo */}
         <div className="p-6 border-b border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-xl flex items-center justify-center">
+              <Sparkles className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white">MiniBeast</h1>
-              <p className="text-xs text-emerald-400">Auth Portal</p>
+              <h1 className="text-lg font-bold text-white">MiniBeast Auth</h1>
+              <p className="text-xs text-slate-400">Admin Portal</p>
             </div>
           </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
-          {tabs.filter(tab => !tab.adminOnly || isAdmin).map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => navigate('/dashboard', { state: { activeTab: tab.id } })}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                tab.id === 'organizations'
-                  ? 'bg-emerald-500/20 text-emerald-400 border-l-4 border-emerald-500'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
-              }`}
-            >
-              <tab.icon className="w-5 h-5" />
-              <span>{tab.label}</span>
-            </button>
-          ))}
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-1">
+          {tabs.map((tab) => {
+            if (tab.adminOnly && !isAdmin) return null;
+            
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => navigate('/dashboard', { state: { activeTab: tab.id } })}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                  tab.id === 'organizations'
+                    ? 'bg-emerald-500 text-white'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="font-medium">{tab.label}</span>
+              </button>
+            );
+          })}
         </nav>
 
+        {/* User Info & Logout */}
         <div className="p-4 border-t border-slate-800 space-y-3">
-          <div className="px-4 py-3 bg-slate-800 rounded-lg">
-            <p className="text-sm font-medium text-white">{user?.full_name}</p>
-            <p className="text-xs text-slate-400">{user?.email}</p>
-            <span className="inline-block mt-2 px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs capitalize">
-              {user?.role}
-            </span>
+          <div className="flex items-center gap-3 px-3 py-2 bg-slate-800/50 rounded-lg">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <Users className="h-4 w-4 text-white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-white truncate">{user?.full_name}</p>
+              <p className="text-xs text-slate-400 truncate capitalize">{user?.role}</p>
+            </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
           >
-            <LogOut className="w-5 h-5" />
+            <LogOut className="w-4 h-4" />
             <span>Logout</span>
           </button>
-          <p className="text-xs text-slate-500 text-center">© 2025 MiniBeast</p>
+          <p className="text-xs text-slate-500 text-center"> 2025 MiniBeast</p>
         </div>
       </aside>
 
@@ -349,6 +381,15 @@ export const OrganizationDetail: React.FC = () => {
                         ) : (
                           <XCircle className="w-5 h-5 text-slate-500" />
                         )}
+                        <button
+                          onClick={() => {
+                            setEditingUser(user);
+                            setShowEditUserModal(true);
+                          }}
+                          className="p-2 hover:bg-emerald-500/20 text-emerald-400 rounded transition-colors"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
                         <button
                           onClick={() => deleteUser(user.id)}
                           className="p-2 hover:bg-red-500/20 text-red-400 rounded transition-colors"
@@ -602,6 +643,76 @@ export const OrganizationDetail: React.FC = () => {
                   className="flex-1 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
                 >
                   Update Organization
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit User Modal */}
+      {showEditUserModal && editingUser && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 rounded-lg p-6 w-full max-w-md border border-slate-700">
+            <h2 className="text-xl font-bold text-white mb-4">Edit User</h2>
+            <form onSubmit={handleEditUser} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Full Name</label>
+                <input
+                  type="text"
+                  required
+                  value={editingUser.full_name}
+                  onChange={(e) => setEditingUser({ ...editingUser, full_name: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Email</label>
+                <input
+                  type="email"
+                  disabled
+                  value={editingUser.email}
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-slate-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Role</label>
+                <select
+                  value={editingUser.role}
+                  onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <div>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={editingUser.is_active}
+                    onChange={(e) => setEditingUser({ ...editingUser, is_active: e.target.checked })}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-sm text-slate-300">Active</span>
+                </label>
+              </div>
+              <div className="flex gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowEditUserModal(false);
+                    setEditingUser(null);
+                  }}
+                  className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+                >
+                  Update User
                 </button>
               </div>
             </form>
