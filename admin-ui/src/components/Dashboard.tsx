@@ -3,11 +3,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { UserManagement } from './UserManagement';
 import { OrganizationSettings } from './OrganizationSettings';
 import { LicenseStatus } from './LicenseStatus';
-import { Users, Building2, Shield, LogOut, Menu } from 'lucide-react';
+import { Home } from './Home';
+import { Users, Building2, Shield, LogOut, Home as HomeIcon, Sparkles } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState('users');
+  const [activeTab, setActiveTab] = useState('home');
 
   const handleLogout = async () => {
     await logout();
@@ -15,76 +16,84 @@ export const Dashboard: React.FC = () => {
   };
 
   const tabs = [
-    { id: 'users', label: 'User Management', icon: Users, adminOnly: true },
+    { id: 'home', label: 'Dashboard', icon: HomeIcon, adminOnly: false },
+    { id: 'users', label: 'Users', icon: Users, adminOnly: true },
     { id: 'organizations', label: 'Organizations', icon: Building2, adminOnly: true },
-    { id: 'license', label: 'License Status', icon: Shield, adminOnly: false },
+    { id: 'license', label: 'License', icon: Shield, adminOnly: false },
   ];
 
   const isAdmin = user?.role === 'admin';
 
   return (
-    <div className="min-h-screen bg-slate-900">
-      {/* Header */}
-      <header className="bg-slate-800 border-b border-slate-700">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Shield className="w-8 h-8 text-emerald-500" />
-              <div>
-                <h1 className="text-xl font-bold text-white">Auth Management</h1>
-                <p className="text-sm text-slate-400">{user?.organization_name}</p>
-              </div>
+    <div className="min-h-screen flex bg-slate-950">
+      {/* Sidebar */}
+      <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col">
+        {/* Logo */}
+        <div className="p-6 border-b border-slate-800">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-xl flex items-center justify-center">
+              <Sparkles className="h-6 w-6 text-white" />
             </div>
-
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <p className="text-sm font-medium text-white">{user?.full_name || user?.email}</p>
-                <p className="text-xs text-slate-400 capitalize">{user?.role}</p>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
-              >
-                <LogOut className="w-4 h-4" />
-                Logout
-              </button>
+            <div>
+              <h1 className="text-lg font-bold text-white">MiniBeast Auth</h1>
+              <p className="text-xs text-slate-400">Admin Portal</p>
             </div>
           </div>
         </div>
-      </header>
 
-      {/* Navigation */}
-      <div className="bg-slate-800 border-b border-slate-700">
-        <div className="container mx-auto px-6">
-          <nav className="flex gap-2">
-            {tabs.map((tab) => {
-              if (tab.adminOnly && !isAdmin) return null;
-              
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-colors ${
-                    activeTab === tab.id
-                      ? 'border-emerald-500 text-emerald-500'
-                      : 'border-transparent text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  {tab.label}
-                </button>
-              );
-            })}
-          </nav>
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-1">
+          {tabs.map((tab) => {
+            if (tab.adminOnly && !isAdmin) return null;
+            
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-emerald-500 text-white'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="font-medium">{tab.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* User Info & Logout */}
+        <div className="p-4 border-t border-slate-800 space-y-3">
+          <div className="flex items-center gap-3 px-3 py-2 bg-slate-800/50 rounded-lg">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <Users className="h-4 w-4 text-white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-white truncate">{user?.full_name}</p>
+              <p className="text-xs text-slate-400 truncate capitalize">{user?.role}</p>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Logout</span>
+          </button>
+          <p className="text-xs text-slate-500 text-center">© 2025 MiniBeast</p>
         </div>
-      </div>
+      </aside>
 
-      {/* Content */}
-      <main className="container mx-auto px-6 py-8">
-        {activeTab === 'users' && isAdmin && <UserManagement />}
-        {activeTab === 'organizations' && isAdmin && <OrganizationSettings />}
-        {activeTab === 'license' && <LicenseStatus />}
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto">
+        <div className="p-8">
+          {activeTab === 'home' && <Home />}
+          {activeTab === 'users' && isAdmin && <UserManagement />}
+          {activeTab === 'organizations' && isAdmin && <OrganizationSettings />}
+          {activeTab === 'license' && <LicenseStatus />}
+        </div>
       </main>
     </div>
   );
