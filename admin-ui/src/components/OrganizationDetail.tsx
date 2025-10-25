@@ -12,6 +12,7 @@ interface Organization {
   license_expires_at: string;
   max_users: number;
   features_enabled: string[];
+  allowed_ips: string[];
   is_active: boolean;
   user_count: number;
 }
@@ -46,7 +47,14 @@ export const OrganizationDetail: React.FC = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [newUser, setNewUser] = useState({ email: '', full_name: '', password: '', role: 'user' });
   const [showEditOrgModal, setShowEditOrgModal] = useState(false);
-  const [editOrgData, setEditOrgData] = useState({ name: '', max_users: 5 });
+  const [editOrgData, setEditOrgData] = useState({
+    name: '',
+    license_type: 'trial',
+    license_expires_at: '',
+    max_users: 5,
+    features_enabled: [] as string[],
+    allowed_ips: [] as string[]
+  });
 
   useEffect(() => {
     fetchOrganization();
@@ -88,23 +96,6 @@ export const OrganizationDetail: React.FC = () => {
     }
   };
 
-  const extendLicense = async (days: number) => {
-    try {
-      const currentExpiry = new Date(organization!.license_expires_at);
-      const newExpiry = new Date(currentExpiry.getTime() + days * 24 * 60 * 60 * 1000);
-      
-      await organizationApi.updateOrganization(id!, {
-        license_expires_at: newExpiry.toISOString()
-      });
-      
-      fetchOrganization();
-      alert(`License extended by ${days} days`);
-    } catch (error) {
-      console.error('Failed to extend license:', error);
-      alert('Failed to extend license');
-    }
-  };
-
   const deleteUser = async (userId: string) => {
     if (!confirm('Are you sure you want to delete this user?')) return;
     
@@ -138,7 +129,11 @@ export const OrganizationDetail: React.FC = () => {
     if (organization) {
       setEditOrgData({
         name: organization.name,
-        max_users: organization.max_users
+        license_type: organization.license_type,
+        license_expires_at: organization.license_expires_at.split('T')[0],
+        max_users: organization.max_users,
+        features_enabled: organization.features_enabled,
+        allowed_ips: organization.allowed_ips || []
       });
       setShowEditOrgModal(true);
     }
@@ -280,20 +275,6 @@ export const OrganizationDetail: React.FC = () => {
             </span>
           </div>
           <p className="text-slate-400">Until Expiry</p>
-          <div className="flex gap-2 mt-3">
-            <button
-              onClick={() => extendLicense(30)}
-              className="flex-1 px-3 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded text-xs transition-colors"
-            >
-              +30 Days
-            </button>
-            <button
-              onClick={() => extendLicense(90)}
-              className="flex-1 px-3 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded text-xs transition-colors"
-            >
-              +90 Days
-            </button>
-          </div>
         </div>
       </div>
 
@@ -515,31 +496,93 @@ export const OrganizationDetail: React.FC = () => {
 
       {/* Edit Organization Modal */}
       {showEditOrgModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-slate-800 rounded-lg p-6 w-full max-w-md border border-slate-700">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 rounded-lg p-6 w-full max-w-2xl border border-slate-700 max-h-[90vh] overflow-y-auto">
             <h2 className="text-xl font-bold text-white mb-4">Edit Organization</h2>
             <form onSubmit={handleEditOrganization} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Organization Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={editOrgData.name}
+                    onChange={(e) => setEditOrgData({ ...editOrgData, name: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">License Type</label>
+                  <select
+                    value={editOrgData.license_type}
+                    onChange={(e) => setEditOrgData({ ...editOrgData, license_type: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  >
+                    <option value="trial">Trial</option>
+                    <option value="standard">Standard</option>
+                    <option value="enterprise">Enterprise</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">License Expires</label>
+                  <input
+                    type="date"
+                    required
+                    value={editOrgData.license_expires_at}
+                    onChange={(e) => setEditOrgData({ ...editOrgData, license_expires_at: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Max Users</label>
+                  <input
+                    type="number"
+                    required
+                    min="1"
+                    value={editOrgData.max_users}
+                    onChange={(e) => setEditOrgData({ ...editOrgData, max_users: parseInt(e.target.value) })}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+              </div>
+
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Organization Name</label>
-                <input
-                  type="text"
-                  required
-                  value={editOrgData.name}
-                  onChange={(e) => setEditOrgData({ ...editOrgData, name: e.target.value })}
+                <label className="block text-sm font-medium text-slate-300 mb-2">Features Enabled</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {['validator', 'analytics', 'api_access', 'priority_support'].map((feature) => (
+                    <label key={feature} className="flex items-center gap-2 p-2 bg-slate-700 rounded-lg cursor-pointer hover:bg-slate-600">
+                      <input
+                        type="checkbox"
+                        checked={editOrgData.features_enabled.includes(feature)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setEditOrgData({ ...editOrgData, features_enabled: [...editOrgData.features_enabled, feature] });
+                          } else {
+                            setEditOrgData({ ...editOrgData, features_enabled: editOrgData.features_enabled.filter(f => f !== feature) });
+                          }
+                        }}
+                        className="w-4 h-4"
+                      />
+                      <span className="text-sm text-slate-300 capitalize">{feature.replace('_', ' ')}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Allowed IPs (comma-separated)</label>
+                <textarea
+                  value={editOrgData.allowed_ips.join(', ')}
+                  onChange={(e) => setEditOrgData({ ...editOrgData, allowed_ips: e.target.value.split(',').map(ip => ip.trim()).filter(ip => ip) })}
+                  placeholder="192.168.1.1, 10.0.0.1"
+                  rows={2}
                   className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1">Max Users</label>
-                <input
-                  type="number"
-                  required
-                  min="1"
-                  value={editOrgData.max_users}
-                  onChange={(e) => setEditOrgData({ ...editOrgData, max_users: parseInt(e.target.value) })}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
-                />
-              </div>
+
               <div className="flex gap-3 mt-6">
                 <button
                   type="button"
@@ -552,7 +595,7 @@ export const OrganizationDetail: React.FC = () => {
                   type="submit"
                   className="flex-1 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
                 >
-                  Update
+                  Update Organization
                 </button>
               </div>
             </form>
