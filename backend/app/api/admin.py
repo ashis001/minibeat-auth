@@ -103,9 +103,12 @@ async def list_users(
     current_admin: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    """List all users (Admin only)"""
+    """List all users (Admin only) - excludes system admins from organization lists"""
     
     query = db.query(User).join(Organization)
+    
+    # Exclude ADMIN role users (system admins) from organization user lists
+    query = query.filter(User.role != UserRole.ADMIN)
     
     if organization_id:
         query = query.filter(User.organization_id == organization_id)
