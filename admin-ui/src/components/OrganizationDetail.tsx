@@ -195,7 +195,7 @@ export const OrganizationDetail: React.FC = () => {
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/dashboard', { state: { activeTab: tab.id } })}
               className="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
             >
               <tab.icon className="w-5 h-5" />
@@ -552,7 +552,7 @@ export const OrganizationDetail: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">Features Enabled</label>
                 <div className="grid grid-cols-2 gap-2">
-                  {['validator', 'analytics', 'api_access', 'priority_support'].map((feature) => (
+                  {['validator', 'migrator', 'reconciliator'].map((feature) => (
                     <label key={feature} className="flex items-center gap-2 p-2 bg-slate-700 rounded-lg cursor-pointer hover:bg-slate-600">
                       <input
                         type="checkbox"

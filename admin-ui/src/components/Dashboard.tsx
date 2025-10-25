@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLocation } from 'react-router-dom';
 import { OrganizationSettings } from './OrganizationSettings';
 import { Home } from './Home';
 import { DatabaseViewer } from './DatabaseViewer';
@@ -7,7 +8,15 @@ import { Users, Building2, LogOut, Home as HomeIcon, Sparkles, Database } from '
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('home');
+
+  useEffect(() => {
+    const state = location.state as { activeTab?: string };
+    if (state?.activeTab) {
+      setActiveTab(state.activeTab);
+    }
+  }, [location]);
 
   const handleLogout = async () => {
     await logout();
