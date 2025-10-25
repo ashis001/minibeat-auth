@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { organizationApi } from '@/api/authClient';
-import { Plus, Edit, Calendar, Users } from 'lucide-react';
+import { Plus, Edit, Calendar, Users, Eye } from 'lucide-react';
 
 interface Organization {
   id: string;
@@ -16,6 +17,7 @@ interface Organization {
 }
 
 export const OrganizationSettings: React.FC = () => {
+  const navigate = useNavigate();
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -154,12 +156,21 @@ export const OrganizationSettings: React.FC = () => {
                     {org.license_type.toUpperCase()}
                   </span>
                 </div>
-                <button
-                  onClick={() => openEditModal(org)}
-                  className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
-                >
-                  <Edit className="w-4 h-4 text-slate-400" />
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => navigate(`/organizations/${org.id}`)}
+                    className="flex items-center gap-2 px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors text-sm"
+                  >
+                    <Eye className="w-4 h-4" />
+                    View
+                  </button>
+                  <button
+                    onClick={() => openEditModal(org)}
+                    className="p-2 hover:bg-slate-700 rounded-lg transition-colors"
+                  >
+                    <Edit className="w-4 h-4 text-slate-400" />
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-3">

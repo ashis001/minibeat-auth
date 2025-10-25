@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { Login } from '@/components/Login';
 import { Dashboard } from '@/components/Dashboard';
+import { OrganizationDetail } from '@/components/OrganizationDetail';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -32,6 +33,14 @@ const AppRoutes: React.FC = () => {
         element={
           <PrivateRoute>
             <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/organizations/:id"
+        element={
+          <PrivateRoute>
+            <OrganizationDetail />
           </PrivateRoute>
         }
       />
