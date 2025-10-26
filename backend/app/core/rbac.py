@@ -4,47 +4,45 @@ from app.models.user import UserRole
 # Role-based permissions
 PERMISSIONS: Dict[UserRole, List[str]] = {
     UserRole.ADMIN: [
-        # Deployment
+        # System admin - Auth portal only, no MiniBeast access
+        "manage_users",
+        "view_users",
+        "create_users",
+        "delete_users",
+        "manage_organization",
+        "view_license",
+        "manage_licenses",
+    ],
+    UserRole.DEVELOPER: [
+        # Full MiniBeast access
         "deploy",
         "view_deployments",
         "delete_deployments",
-        
-        # Validations
         "view_validations",
         "add_validations",
         "edit_validations",
         "delete_validations",
         "run_validations",
-        
-        # Activity
         "view_activity",
-        
-        # User Management
-        "manage_users",
-        "view_users",
-        "create_users",
-        "delete_users",
-        
-        # Organization
-        "manage_organization",
         "view_license",
+        "use_migrator",
+        "use_config",
+        "use_reconciliator",
     ],
-    UserRole.USER: [
-        # Validations
+    UserRole.TESTER: [
+        # Validator, Dashboard, Reconciliator
         "view_validations",
         "add_validations",
         "edit_validations",
         "run_validations",
-        
-        # Activity
         "view_activity",
-        
-        # Limited access
         "view_license",
+        "use_reconciliator",
     ],
-    UserRole.VIEWER: [
-        # Read-only
+    UserRole.OPS: [
+        # Dashboard and Validator only
         "view_validations",
+        "run_validations",
         "view_activity",
         "view_license",
     ]
