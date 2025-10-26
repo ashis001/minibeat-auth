@@ -23,7 +23,7 @@ class User(Base):
     
     # Profile
     full_name = Column(String(255))
-    role = Column(Enum(UserRole), nullable=False, default=UserRole.USER)
+    role = Column(Enum(UserRole), nullable=False, default=UserRole.DEVELOPER)
     
     # Organization
     organization_id = Column(UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=False)
