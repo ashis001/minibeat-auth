@@ -205,10 +205,28 @@ export const UserManagement: React.FC = () => {
 
       {/* Create User Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-slate-800 rounded-lg p-6 w-full max-w-md border border-slate-700">
+        <div 
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowCreateModal(false);
+            }
+          }}
+        >
+          <div className="bg-slate-800 rounded-lg p-6 w-full max-w-md border border-slate-700 relative z-10">
+            <div className="absolute top-4 right-4">
+              <button
+                type="button"
+                onClick={() => setShowCreateModal(false)}
+                className="text-slate-400 hover:text-white transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
             <h3 className="text-xl font-bold text-white mb-4">Create New User</h3>
-            <form onSubmit={handleCreateUser} className="space-y-4">
+            <form onSubmit={handleCreateUser} className="space-y-4 relative z-20">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
                   Email *
@@ -255,6 +273,7 @@ export const UserManagement: React.FC = () => {
                   value={formData.organization_id}
                   onChange={(e) => setFormData({ ...formData, organization_id: e.target.value })}
                   className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                  style={{ pointerEvents: 'auto' }}
                   required
                 >
                   <option value="" className="bg-slate-900 text-white">Select Organization</option>
@@ -274,6 +293,7 @@ export const UserManagement: React.FC = () => {
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                   className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                  style={{ pointerEvents: 'auto' }}
                   required
                 >
                   <option value="developer" className="bg-slate-900 text-white">Developer - Full Access</option>
