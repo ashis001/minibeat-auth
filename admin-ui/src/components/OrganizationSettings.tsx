@@ -102,7 +102,7 @@ export const OrganizationSettings: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-brand-green border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -117,7 +117,7 @@ export const OrganizationSettings: React.FC = () => {
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-brand-green hover:bg-brand-green text-white rounded-lg transition-colors"
         >
           <Plus className="w-4 h-4" />
           Create Organization
@@ -152,7 +152,7 @@ export const OrganizationSettings: React.FC = () => {
                 </div>
                 <button
                   onClick={() => navigate(`/organizations/${org.id}`)}
-                  className="flex items-center gap-2 px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors text-sm"
+                  className="flex items-center gap-2 px-3 py-2 bg-brand-green hover:bg-brand-green text-white rounded-lg transition-colors text-sm"
                 >
                   <Eye className="w-4 h-4" />
                   View
@@ -183,7 +183,7 @@ export const OrganizationSettings: React.FC = () => {
                     {org.features_enabled.map((feature) => (
                       <span
                         key={feature}
-                        className="px-2 py-1 text-xs bg-emerald-900/30 text-emerald-400 rounded"
+                        className="px-2 py-1 text-xs bg-slate-900/30 text-brand-green rounded"
                       >
                         {feature}
                       </span>
@@ -195,7 +195,7 @@ export const OrganizationSettings: React.FC = () => {
                 <div className="pt-2">
                   <span className={`inline-flex items-center gap-1 px-2 py-1 text-xs rounded ${
                     org.is_active
-                      ? 'bg-emerald-900/30 text-emerald-400'
+                      ? 'bg-slate-900/30 text-brand-green'
                       : 'bg-red-900/30 text-red-400'
                   }`}>
                     {org.is_active ? '● Active' : '● Inactive'}
@@ -283,7 +283,7 @@ export const OrganizationSettings: React.FC = () => {
                         type="checkbox"
                         checked={formData.features_enabled.includes(feature)}
                         onChange={() => toggleFeature(feature)}
-                        className="w-4 h-4 text-emerald-500 bg-slate-900 border-slate-600 rounded"
+                        className="w-4 h-4 text-brand-green bg-slate-900 border-slate-600 rounded"
                       />
                       <span className="text-sm text-slate-300 capitalize">{feature}</span>
                     </label>
@@ -321,7 +321,7 @@ export const OrganizationSettings: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+                  className="flex-1 px-4 py-2 bg-brand-green hover:bg-brand-green text-white rounded-lg transition-colors"
                 >
                   {editingOrg ? 'Update' : 'Create'} Organization
                 </button>

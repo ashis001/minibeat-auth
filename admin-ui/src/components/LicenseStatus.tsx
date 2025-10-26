@@ -38,7 +38,7 @@ export const LicenseStatus: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-brand-green border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -86,7 +86,7 @@ export const LicenseStatus: React.FC = () => {
               ? 'bg-red-900/30 text-red-400'
               : isExpiringSoon
               ? 'bg-amber-900/30 text-amber-400'
-              : 'bg-emerald-900/30 text-emerald-400'
+              : 'bg-slate-900/30 text-brand-green'
           }`}>
             {isExpired ? (
               <>
@@ -118,7 +118,7 @@ export const LicenseStatus: React.FC = () => {
                 ? 'text-red-400'
                 : isExpiringSoon
                 ? 'text-amber-400'
-                : 'text-emerald-400'
+                : 'text-brand-green'
             }`}>
               {isExpired
                 ? `Expired ${Math.abs(license.days_remaining)} days ago`
@@ -141,7 +141,7 @@ export const LicenseStatus: React.FC = () => {
                   className={`h-2 rounded-full ${
                     license.current_users >= license.max_users
                       ? 'bg-red-500'
-                      : 'bg-emerald-500'
+                      : 'bg-brand-green'
                   }`}
                   style={{ width: `${(license.current_users / license.max_users) * 100}%` }}
                 />
@@ -169,7 +169,7 @@ export const LicenseStatus: React.FC = () => {
             {license.features_enabled.map((feature) => (
               <span
                 key={feature}
-                className="px-3 py-1.5 bg-emerald-900/30 text-emerald-400 rounded-lg text-sm font-medium flex items-center gap-2"
+                className="px-3 py-1.5 bg-slate-900/30 text-brand-green rounded-lg text-sm font-medium flex items-center gap-2"
               >
                 <CheckCircle className="w-4 h-4" />
                 {feature.charAt(0).toUpperCase() + feature.slice(1)}

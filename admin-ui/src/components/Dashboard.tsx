@@ -40,7 +40,7 @@ export const Dashboard: React.FC = () => {
         {/* Logo */}
         <div className="p-6 border-b border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-brand-green to-blue-600 rounded-xl flex items-center justify-center">
               <Sparkles className="h-6 w-6 text-white" />
             </div>
             <div>
@@ -62,7 +62,7 @@ export const Dashboard: React.FC = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                   activeTab === tab.id
-                    ? 'bg-emerald-500 text-white'
+                    ? 'bg-brand-green text-white'
                     : 'text-slate-300 hover:text-white hover:bg-slate-800'
                 }`}
               >

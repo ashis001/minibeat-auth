@@ -90,7 +90,7 @@ export const UserManagement: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-brand-green border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -105,7 +105,7 @@ export const UserManagement: React.FC = () => {
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-brand-green hover:bg-brand-green text-white rounded-lg transition-colors"
         >
           <Plus className="w-4 h-4" />
           Create User
@@ -159,7 +159,7 @@ export const UserManagement: React.FC = () => {
                         : user.role.toLowerCase() === 'tester'
                         ? 'bg-orange-900/50 text-orange-300'
                         : user.role.toLowerCase() === 'ops'
-                        ? 'bg-emerald-900/50 text-emerald-300'
+                        ? 'bg-slate-900/50 text-brand-green300'
                         : 'bg-slate-700 text-slate-300'
                     }`}>
                       {user.role.toUpperCase()}
@@ -171,7 +171,7 @@ export const UserManagement: React.FC = () => {
                       className="flex items-center gap-1"
                     >
                       {user.is_active ? (
-                        <span className="flex items-center gap-1 text-emerald-400">
+                        <span className="flex items-center gap-1 text-brand-green">
                           <CheckCircle className="w-4 h-4" />
                           Active
                         </span>
@@ -274,7 +274,7 @@ export const UserManagement: React.FC = () => {
                   }}
                   onClick={() => console.log('Organization select clicked')}
                   onFocus={() => console.log('Organization select focused')}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-brand-green"
                   required
                   tabIndex={0}
                 >
@@ -299,7 +299,7 @@ export const UserManagement: React.FC = () => {
                   }}
                   onClick={() => console.log('Role select clicked')}
                   onFocus={() => console.log('Role select focused')}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-brand-green"
                   required
                   tabIndex={0}
                 >
@@ -319,7 +319,7 @@ export const UserManagement: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+                  className="flex-1 px-4 py-2 bg-brand-green hover:bg-brand-green text-white rounded-lg transition-colors"
                 >
                   Create User
                 </button>

@@ -181,7 +181,7 @@ export const Monitor: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-brand-green border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -195,7 +195,7 @@ export const Monitor: React.FC = () => {
           <p className="text-slate-400 mb-4">{error}</p>
           <button
             onClick={fetchSystemStats}
-            className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+            className="px-4 py-2 bg-brand-green hover:bg-brand-green text-white rounded-lg transition-colors"
           >
             Retry
           </button>
@@ -216,10 +216,10 @@ export const Monitor: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-              stats?.api_health.status === 'healthy' ? 'bg-emerald-500/20' : 'bg-red-500/20'
+              stats?.api_health.status === 'healthy' ? 'bg-brand-green/20' : 'bg-red-500/20'
             }`}>
               <Server className={`w-6 h-6 ${
-                stats?.api_health.status === 'healthy' ? 'text-emerald-400' : 'text-red-400'
+                stats?.api_health.status === 'healthy' ? 'text-brand-green' : 'text-red-400'
               }`} />
             </div>
             <div>
@@ -245,7 +245,7 @@ export const Monitor: React.FC = () => {
             </button>
             <div className={`px-4 py-2 rounded-full text-sm font-medium ${
               stats?.api_health.status === 'healthy' 
-                ? 'bg-emerald-500/20 text-emerald-400' 
+                ? 'bg-brand-green/20 text-brand-green' 
                 : 'bg-red-500/20 text-red-400'
             }`}>
               {stats?.api_health.status === 'healthy' ? 'Operational' : 'Issues Detected'}
@@ -270,7 +270,7 @@ export const Monitor: React.FC = () => {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-slate-400">Active:</span>
-              <span className="text-emerald-400 font-medium">{stats?.active_organizations || 0}</span>
+              <span className="text-brand-green font-medium">{stats?.active_organizations || 0}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-400">Paused:</span>
@@ -293,7 +293,7 @@ export const Monitor: React.FC = () => {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-slate-400">Active:</span>
-              <span className="text-emerald-400 font-medium">{stats?.active_users || 0}</span>
+              <span className="text-brand-green font-medium">{stats?.active_users || 0}</span>
             </div>
           </div>
         </div>
@@ -577,9 +577,9 @@ export const Monitor: React.FC = () => {
                   <p className="text-xs text-slate-400 mb-1">Total APIs</p>
                   <p className="text-2xl font-bold text-white">{apiDetails.total_endpoints}</p>
                 </div>
-                <div className="bg-emerald-500/10 rounded-lg p-4">
-                  <p className="text-xs text-emerald-400 mb-1">Healthy</p>
-                  <p className="text-2xl font-bold text-emerald-400">{apiDetails.healthy_count}</p>
+                <div className="bg-brand-green/10 rounded-lg p-4">
+                  <p className="text-xs text-brand-green mb-1">Healthy</p>
+                  <p className="text-2xl font-bold text-brand-green">{apiDetails.healthy_count}</p>
                 </div>
                 <div className="bg-orange-500/10 rounded-lg p-4">
                   <p className="text-xs text-orange-400 mb-1">Slow</p>
@@ -600,7 +600,7 @@ export const Monitor: React.FC = () => {
                   key={index}
                   className={`p-4 rounded-lg border-2 transition-all ${
                     endpoint.status === 'healthy'
-                      ? 'bg-emerald-500/5 border-emerald-500/30'
+                      ? 'bg-brand-green/5 border-brand-green/30'
                       : endpoint.status === 'slow'
                       ? 'bg-orange-500/5 border-orange-500/30'
                       : 'bg-red-500/5 border-red-500/30'
@@ -611,7 +611,7 @@ export const Monitor: React.FC = () => {
                       <div
                         className={`w-10 h-10 rounded-full flex items-center justify-center ${
                           endpoint.status === 'healthy'
-                            ? 'bg-emerald-500/20'
+                            ? 'bg-brand-green/20'
                             : endpoint.status === 'slow'
                             ? 'bg-orange-500/20'
                             : 'bg-red-500/20'
@@ -621,7 +621,7 @@ export const Monitor: React.FC = () => {
                           <CheckCircle
                             className={`w-5 h-5 ${
                               endpoint.status === 'healthy'
-                                ? 'text-emerald-400'
+                                ? 'text-brand-green'
                                 : endpoint.status === 'slow'
                                 ? 'text-orange-400'
                                 : 'text-red-400'
@@ -642,7 +642,7 @@ export const Monitor: React.FC = () => {
                       <div
                         className={`px-3 py-1 rounded-full text-xs font-medium mb-1 ${
                           endpoint.status === 'healthy'
-                            ? 'bg-emerald-500/20 text-emerald-400'
+                            ? 'bg-brand-green/20 text-brand-green'
                             : endpoint.status === 'slow'
                             ? 'bg-orange-500/20 text-orange-400'
                             : 'bg-red-500/20 text-red-400'
@@ -658,7 +658,7 @@ export const Monitor: React.FC = () => {
                   <p
                     className={`text-sm ${
                       endpoint.status === 'healthy'
-                        ? 'text-emerald-400'
+                        ? 'text-brand-green'
                         : endpoint.status === 'slow'
                         ? 'text-orange-400'
                         : 'text-red-400'

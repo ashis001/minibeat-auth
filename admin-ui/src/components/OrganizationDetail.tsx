@@ -201,7 +201,7 @@ export const OrganizationDetail: React.FC = () => {
   if (loading || !organization) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-brand-green border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -230,7 +230,7 @@ export const OrganizationDetail: React.FC = () => {
         {/* Logo */}
         <div className="p-6 border-b border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-brand-green to-blue-600 rounded-xl flex items-center justify-center">
               <Sparkles className="h-6 w-6 text-white" />
             </div>
             <div>
@@ -252,7 +252,7 @@ export const OrganizationDetail: React.FC = () => {
                 onClick={() => navigate('/dashboard', { state: { activeTab: tab.id } })}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                   tab.id === 'organizations'
-                    ? 'bg-emerald-500 text-white'
+                    ? 'bg-brand-green text-white'
                     : 'text-slate-300 hover:text-white hover:bg-slate-800'
                 }`}
               >
@@ -325,7 +325,7 @@ export const OrganizationDetail: React.FC = () => {
           </button>
           <button 
             onClick={openEditOrgModal}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-brand-green hover:bg-brand-green text-white rounded-lg transition-colors"
           >
             <Edit className="w-4 h-4" />
             Edit Organization
@@ -345,7 +345,7 @@ export const OrganizationDetail: React.FC = () => {
 
         <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
           <div className="flex items-center justify-between mb-4">
-            <Shield className="w-8 h-8 text-emerald-400" />
+            <Shield className="w-8 h-8 text-brand-green" />
             <span className="text-lg font-semibold text-white capitalize">{organization.license_type}</span>
           </div>
           <p className="text-slate-400">License Type</p>
@@ -377,7 +377,7 @@ export const OrganizationDetail: React.FC = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-6 py-3 border-b-2 transition-colors ${
                   activeTab === tab.id
-                    ? 'border-emerald-500 text-emerald-400'
+                    ? 'border-brand-green text-brand-green'
                     : 'border-transparent text-slate-400 hover:text-white'
                 }`}
               >
@@ -396,7 +396,7 @@ export const OrganizationDetail: React.FC = () => {
                 <h3 className="text-lg font-semibold text-white">Organization Users</h3>
                 <button 
                   onClick={() => setShowAddUserModal(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors text-sm"
+                  className="flex items-center gap-2 px-4 py-2 bg-brand-green hover:bg-brand-green text-white rounded-lg transition-colors text-sm"
                 >
                   <Plus className="w-4 h-4" />
                   Add User
@@ -423,7 +423,7 @@ export const OrganizationDetail: React.FC = () => {
                           {user.role}
                         </span>
                         {user.is_active ? (
-                          <CheckCircle className="w-5 h-5 text-emerald-400" />
+                          <CheckCircle className="w-5 h-5 text-brand-green" />
                         ) : (
                           <XCircle className="w-5 h-5 text-slate-500" />
                         )}
@@ -432,7 +432,7 @@ export const OrganizationDetail: React.FC = () => {
                             setEditingUser(user);
                             setShowEditUserModal(true);
                           }}
-                          className="p-2 hover:bg-emerald-500/20 text-emerald-400 rounded transition-colors"
+                          className="p-2 hover:bg-brand-green/20 text-brand-green rounded transition-colors"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
@@ -479,7 +479,7 @@ export const OrganizationDetail: React.FC = () => {
                 <h3 className="text-lg font-semibold text-white mb-4">Enabled Features</h3>
                 <div className="flex flex-wrap gap-2">
                   {organization.features_enabled.map((feature) => (
-                    <span key={feature} className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-sm capitalize">
+                    <span key={feature} className="px-3 py-1 bg-brand-green/20 text-brand-green rounded-full text-sm capitalize">
                       {feature}
                     </span>
                   ))}
@@ -504,7 +504,7 @@ export const OrganizationDetail: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <p className="text-xs text-slate-400">{new Date(log.timestamp).toLocaleString()}</p>
-                        <span className={`text-xs ${log.status === 'success' ? 'text-emerald-400' : 'text-red-400'}`}>
+                        <span className={`text-xs ${log.status === 'success' ? 'text-brand-green' : 'text-red-400'}`}>
                           {log.status}
                         </span>
                       </div>
@@ -530,7 +530,7 @@ export const OrganizationDetail: React.FC = () => {
                   required
                   value={newUser.email}
                   onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-brand-green"
                 />
               </div>
               <div>
@@ -540,7 +540,7 @@ export const OrganizationDetail: React.FC = () => {
                   required
                   value={newUser.full_name}
                   onChange={(e) => setNewUser({ ...newUser, full_name: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-brand-green"
                 />
               </div>
               <div>
@@ -550,7 +550,7 @@ export const OrganizationDetail: React.FC = () => {
                   required
                   value={newUser.password}
                   onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-brand-green"
                 />
               </div>
               <div>
@@ -558,7 +558,7 @@ export const OrganizationDetail: React.FC = () => {
                 <select
                   value={newUser.role}
                   onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-brand-green"
                   required
                 >
                   <option value="developer">Developer - Full Access</option>
@@ -579,7 +579,7 @@ export const OrganizationDetail: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+                  className="flex-1 px-4 py-2 bg-brand-green hover:bg-brand-green text-white rounded-lg transition-colors"
                 >
                   Create User
                 </button>
@@ -603,7 +603,7 @@ export const OrganizationDetail: React.FC = () => {
                     required
                     value={editOrgData.name}
                     onChange={(e) => setEditOrgData({ ...editOrgData, name: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-brand-green"
                   />
                 </div>
                 <div>
@@ -611,7 +611,7 @@ export const OrganizationDetail: React.FC = () => {
                   <select
                     value={editOrgData.license_type}
                     onChange={(e) => setEditOrgData({ ...editOrgData, license_type: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-brand-green"
                   >
                     <option value="trial">Trial</option>
                     <option value="standard">Standard</option>
@@ -628,7 +628,7 @@ export const OrganizationDetail: React.FC = () => {
                     required
                     value={editOrgData.license_expires_at}
                     onChange={(e) => setEditOrgData({ ...editOrgData, license_expires_at: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-brand-green"
                   />
                 </div>
                 <div>
@@ -639,7 +639,7 @@ export const OrganizationDetail: React.FC = () => {
                     min="1"
                     value={editOrgData.max_users}
                     onChange={(e) => setEditOrgData({ ...editOrgData, max_users: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-brand-green"
                   />
                 </div>
               </div>
@@ -674,7 +674,7 @@ export const OrganizationDetail: React.FC = () => {
                   onChange={(e) => setEditOrgData({ ...editOrgData, allowed_ips: e.target.value.split(',').map(ip => ip.trim()).filter(ip => ip) })}
                   placeholder="192.168.1.1, 10.0.0.1"
                   rows={2}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-brand-green"
                 />
               </div>
 
@@ -688,7 +688,7 @@ export const OrganizationDetail: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+                  className="flex-1 px-4 py-2 bg-brand-green hover:bg-brand-green text-white rounded-lg transition-colors"
                 >
                   Update Organization
                 </button>
@@ -711,7 +711,7 @@ export const OrganizationDetail: React.FC = () => {
                   required
                   value={editingUser.full_name}
                   onChange={(e) => setEditingUser({ ...editingUser, full_name: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-brand-green"
                 />
               </div>
               <div>
@@ -728,7 +728,7 @@ export const OrganizationDetail: React.FC = () => {
                 <select
                   value={editingUser.role}
                   onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-brand-green"
                   required
                 >
                   <option value="developer">Developer - Full Access</option>
@@ -760,7 +760,7 @@ export const OrganizationDetail: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+                  className="flex-1 px-4 py-2 bg-brand-green hover:bg-brand-green text-white rounded-lg transition-colors"
                 >
                   Update User
                 </button>

@@ -51,7 +51,7 @@ export const Home: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-brand-green border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -83,7 +83,7 @@ export const Home: React.FC = () => {
       title: 'Active Licenses',
       value: stats.active_licenses,
       icon: Shield,
-      color: 'bg-emerald-500/20 text-emerald-400',
+      color: 'bg-brand-green/20 text-brand-green',
       trend: `${stats.expiring_soon} expiring soon`
     },
     {
@@ -107,7 +107,7 @@ export const Home: React.FC = () => {
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${card.color}`}>
                   <Icon className="w-6 h-6" />
                 </div>
-                <TrendingUp className="w-5 h-5 text-emerald-500" />
+                <TrendingUp className="w-5 h-5 text-brand-green" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-1">{card.value}</h3>
               <p className="text-slate-400 text-sm mb-2">{card.title}</p>
@@ -122,7 +122,7 @@ export const Home: React.FC = () => {
         {/* License Distribution */}
         <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <Shield className="w-5 h-5 text-emerald-400" />
+            <Shield className="w-5 h-5 text-brand-green" />
             License Distribution
           </h3>
           <div className="space-y-3">
@@ -134,7 +134,7 @@ export const Home: React.FC = () => {
                 </div>
                 <div className="w-full bg-slate-700 rounded-full h-2">
                   <div
-                    className="bg-gradient-to-r from-emerald-500 to-blue-500 h-2 rounded-full"
+                    className="bg-gradient-to-r from-brand-green to-blue-500 h-2 rounded-full"
                     style={{ width: `${(count / stats.total_organizations) * 100}%` }}
                   />
                 </div>
@@ -188,7 +188,7 @@ export const Home: React.FC = () => {
                     <p className="text-xs text-slate-400">{user.email}</p>
                   </div>
                 </div>
-                <span className="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded capitalize">
+                <span className="text-xs bg-brand-green/20 text-brand-green px-2 py-1 rounded capitalize">
                   {user.role}
                 </span>
               </div>

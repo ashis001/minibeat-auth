@@ -96,7 +96,7 @@ export const DatabaseViewer: React.FC = () => {
           onClick={() => setQueryMode(!queryMode)}
           className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
             queryMode
-              ? 'bg-emerald-500 text-white'
+              ? 'bg-brand-green text-white'
               : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
           }`}
         >
@@ -113,12 +113,12 @@ export const DatabaseViewer: React.FC = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="SELECT * FROM users LIMIT 10;"
-              className="w-full h-32 px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white font-mono text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full h-32 px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white font-mono text-sm focus:outline-none focus:border-brand-green"
             />
             <button
               onClick={executeQuery}
               disabled={loading}
-              className="mt-3 flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-600 text-white rounded-lg transition-colors"
+              className="mt-3 flex items-center gap-2 px-4 py-2 bg-brand-green hover:bg-brand-green disabled:bg-slate-600 text-white rounded-lg transition-colors"
             >
               <Play className="w-4 h-4" />
               {loading ? 'Executing...' : 'Execute Query'}
@@ -135,7 +135,7 @@ export const DatabaseViewer: React.FC = () => {
                   <thead className="bg-slate-900 border-b border-slate-700">
                     <tr>
                       {queryResult.columns.map((col: string, idx: number) => (
-                        <th key={idx} className="px-4 py-3 text-left text-emerald-400 font-medium">
+                        <th key={idx} className="px-4 py-3 text-left text-brand-green font-medium">
                           {col}
                         </th>
                       ))}
@@ -162,7 +162,7 @@ export const DatabaseViewer: React.FC = () => {
           {/* Tables List */}
           <div className="col-span-3 bg-slate-800 rounded-lg border border-slate-700 p-4">
             <div className="flex items-center gap-2 mb-4">
-              <Database className="w-5 h-5 text-emerald-400" />
+              <Database className="w-5 h-5 text-brand-green" />
               <h2 className="font-semibold text-white">Tables ({tables.length})</h2>
               <button onClick={fetchTables} className="ml-auto p-1 hover:bg-slate-700 rounded">
                 <RefreshCw className="w-4 h-4 text-slate-400" />
@@ -178,7 +178,7 @@ export const DatabaseViewer: React.FC = () => {
                   }}
                   className={`w-full text-left p-3 rounded-lg transition-colors ${
                     selectedTable === table.name
-                      ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
+                      ? 'bg-brand-green/20 border-brand-green text-brand-green'
                       : 'bg-slate-700 hover:bg-slate-600 text-slate-300'
                   }`}
                 >
@@ -209,7 +209,7 @@ export const DatabaseViewer: React.FC = () => {
                 
                 {loading ? (
                   <div className="flex items-center justify-center h-64">
-                    <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+                    <div className="w-8 h-8 border-4 border-brand-green border-t-transparent rounded-full animate-spin" />
                   </div>
                 ) : tableData ? (
                   <>
@@ -218,7 +218,7 @@ export const DatabaseViewer: React.FC = () => {
                         <thead className="bg-slate-900 border-b border-slate-700 sticky top-0">
                           <tr>
                             {tableData.columns.map((col, idx) => (
-                              <th key={idx} className="px-4 py-3 text-left text-emerald-400 font-medium whitespace-nowrap">
+                              <th key={idx} className="px-4 py-3 text-left text-brand-green font-medium whitespace-nowrap">
                                 {col}
                               </th>
                             ))}
