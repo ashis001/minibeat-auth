@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import func, text
 from datetime import datetime, timedelta
+import time
 from app.db.database import get_db
 from app.models.user import User, UserRole
 from app.models.organization import Organization
+from app.models.audit_log import AuditLog, AuditAction
 from app.api.admin import get_current_admin
 import time
 
@@ -161,9 +162,19 @@ async def get_system_stats(
         Organization.license_expires_at <= thirty_days
     ).count()
     
-    # Security stats (placeholder - would need audit log table)
-    failed_logins_today = 0
-    ip_violations_today = 0
+    # Security stats from audit logs
+    today_start = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+    
+    failed_logins_today = db.query(AuditLog).filter(
+        AuditLog.action == AuditAction.LOGIN_FAILED,
+        AuditLog.timestamp >= today_start
+    ).count()
+    
+    ip_violations_today = db.query(AuditLog).filter(
+        AuditLog.action == AuditAction.LOGIN_FAILED,
+        AuditLog.timestamp >= today_start,
+        AuditLog.details['reason'].astext == 'ip_not_whitelisted'
+    ).count()
     
     # API health - use real health check
     api_health = check_api_health()
