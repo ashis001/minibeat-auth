@@ -44,7 +44,7 @@ export const Login: React.FC = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-black text-brand-green mb-2 tracking-tight">
-            MiniBeast <span className="text-4xl font-medium">{'{Admin Panel}'}</span>
+            MiniBeast <span className="font-black">{'{Admin Panel}'}</span>
           </h1>
           <p className="text-lg text-brand-green/80 font-light italic">
             a product of <span className="font-semibold">Dataction</span>
