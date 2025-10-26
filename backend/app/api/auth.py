@@ -210,6 +210,44 @@ async def validate_token_endpoint(
     )
 
 
+@router.get("/me")
+async def get_current_user(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    """Get current user info from token"""
+    
+    # Get token from Authorization header
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing or invalid token")
+    
+    token = auth_header.split(" ")[1]
+    payload = verify_token(token)
+    
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+    
+    user_id = payload.get("user_id")
+    user = db.query(User).filter(User.id == user_id).first()
+    
+    if not user or not user.is_active:
+        raise HTTPException(status_code=401, detail="User not found or inactive")
+    
+    # Get permissions
+    permissions = get_user_permissions(user.role)
+    
+    return {
+        "id": str(user.id),
+        "email": user.email,
+        "full_name": user.full_name,
+        "role": user.role.value,
+        "organization_id": str(user.organization_id),
+        "is_active": user.is_active,
+        "permissions": permissions
+    }
+
+
 @router.post("/logout")
 async def logout(
     user_id: str,
