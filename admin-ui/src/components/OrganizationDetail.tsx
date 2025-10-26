@@ -45,7 +45,7 @@ export const OrganizationDetail: React.FC = () => {
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
-  const [newUser, setNewUser] = useState({ email: '', full_name: '', password: '', role: 'user' });
+  const [newUser, setNewUser] = useState({ email: '', full_name: '', password: '', role: 'developer' });
   const [showEditUserModal, setShowEditUserModal] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [showEditOrgModal, setShowEditOrgModal] = useState(false);
@@ -554,20 +554,23 @@ export const OrganizationDetail: React.FC = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">Role</label>
-                <input
-                  type="text"
-                  disabled
-                  value="User"
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-slate-500"
-                />
-                <p className="text-xs text-slate-500 mt-1">Organization users are assigned User role by default</p>
+                <select
+                  value={newUser.role}
+                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  required
+                >
+                  <option value="developer">Developer - Full Access</option>
+                  <option value="tester">Tester - Validator, Dashboard, Reconciliator</option>
+                  <option value="ops">Ops - Validator & Dashboard Only</option>
+                </select>
               </div>
               <div className="flex gap-3 mt-6">
                 <button
                   type="button"
                   onClick={() => {
                     setShowAddUserModal(false);
-                    setNewUser({ email: '', full_name: '', password: '', role: 'user' });
+                    setNewUser({ email: '', full_name: '', password: '', role: 'developer' });
                   }}
                   className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
                 >
@@ -721,13 +724,16 @@ export const OrganizationDetail: React.FC = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">Role</label>
-                <input
-                  type="text"
-                  disabled
+                <select
                   value={editingUser.role}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-slate-500 capitalize"
-                />
-                <p className="text-xs text-slate-500 mt-1">Role cannot be changed from UI for security</p>
+                  onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                  required
+                >
+                  <option value="developer">Developer - Full Access</option>
+                  <option value="tester">Tester - Validator, Dashboard, Reconciliator</option>
+                  <option value="ops">Ops - Validator & Dashboard Only</option>
+                </select>
               </div>
               <div>
                 <label className="flex items-center gap-2 cursor-pointer">
