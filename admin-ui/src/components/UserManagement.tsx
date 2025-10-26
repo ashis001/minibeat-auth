@@ -268,7 +268,12 @@ export const UserManagement: React.FC = () => {
                 </label>
                 <select
                   value={formData.organization_id}
-                  onChange={(e) => setFormData({ ...formData, organization_id: e.target.value })}
+                  onChange={(e) => {
+                    console.log('Organization changed:', e.target.value);
+                    setFormData({ ...formData, organization_id: e.target.value });
+                  }}
+                  onClick={() => console.log('Organization select clicked')}
+                  onFocus={() => console.log('Organization select focused')}
                   className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-emerald-500"
                   required
                   tabIndex={0}
@@ -288,7 +293,12 @@ export const UserManagement: React.FC = () => {
                 </label>
                 <select
                   value={formData.role}
-                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                  onChange={(e) => {
+                    console.log('Role changed:', e.target.value);
+                    setFormData({ ...formData, role: e.target.value });
+                  }}
+                  onClick={() => console.log('Role select clicked')}
+                  onFocus={() => console.log('Role select focused')}
                   className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-emerald-500"
                   required
                   tabIndex={0}
