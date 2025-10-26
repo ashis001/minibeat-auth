@@ -26,11 +26,32 @@ interface RecentActivity {
   severity: 'info' | 'warning' | 'error';
 }
 
+interface ApiEndpoint {
+  name: string;
+  endpoint: string;
+  status: 'healthy' | 'slow' | 'failed';
+  response_time: number;
+  message: string;
+}
+
+interface ApiHealthDetails {
+  overall_status: string;
+  overall_message: string;
+  total_endpoints: number;
+  healthy_count: number;
+  slow_count: number;
+  failed_count: number;
+  endpoints: ApiEndpoint[];
+}
+
 export const Monitor: React.FC = () => {
   const [stats, setStats] = useState<SystemStats | null>(null);
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showApiModal, setShowApiModal] = useState(false);
+  const [apiDetails, setApiDetails] = useState<ApiHealthDetails | null>(null);
+  const [loadingApiDetails, setLoadingApiDetails] = useState(false);
 
   useEffect(() => {
     fetchSystemStats();
@@ -106,6 +127,22 @@ export const Monitor: React.FC = () => {
     }
   };
 
+  const fetchApiDetails = async () => {
+    try {
+      setLoadingApiDetails(true);
+      const token = localStorage.getItem('access_token');
+      const response = await axios.get('http://139.59.22.121:8000/admin/system/api-health', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setApiDetails(response.data);
+      setShowApiModal(true);
+      setLoadingApiDetails(false);
+    } catch (error: any) {
+      console.error('Failed to fetch API details:', error);
+      setLoadingApiDetails(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -158,12 +195,26 @@ export const Monitor: React.FC = () => {
               )}
             </div>
           </div>
-          <div className={`px-4 py-2 rounded-full text-sm font-medium ${
-            stats?.api_health.status === 'healthy' 
-              ? 'bg-emerald-500/20 text-emerald-400' 
-              : 'bg-red-500/20 text-red-400'
-          }`}>
-            {stats?.api_health.status === 'healthy' ? 'Operational' : 'Issues Detected'}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={fetchApiDetails}
+              disabled={loadingApiDetails}
+              className="px-4 py-2 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+            >
+              {loadingApiDetails ? (
+                <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Activity className="w-4 h-4" />
+              )}
+              View Details
+            </button>
+            <div className={`px-4 py-2 rounded-full text-sm font-medium ${
+              stats?.api_health.status === 'healthy' 
+                ? 'bg-emerald-500/20 text-emerald-400' 
+                : 'bg-red-500/20 text-red-400'
+            }`}>
+              {stats?.api_health.status === 'healthy' ? 'Operational' : 'Issues Detected'}
+            </div>
           </div>
         </div>
       </div>
@@ -289,6 +340,137 @@ export const Monitor: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* API Health Details Modal */}
+      {showApiModal && apiDetails && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 rounded-2xl w-full max-w-3xl border-2 border-slate-700 shadow-2xl max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-slate-800 border-b border-slate-700 p-6 flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-white mb-1">API Health Details</h2>
+                <p className="text-sm text-slate-400">{apiDetails.overall_message}</p>
+              </div>
+              <button
+                onClick={() => setShowApiModal(false)}
+                className="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition-colors"
+              >
+                <XCircle className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Summary Stats */}
+            <div className="p-6 border-b border-slate-700">
+              <div className="grid grid-cols-4 gap-4">
+                <div className="bg-slate-700/50 rounded-lg p-4">
+                  <p className="text-xs text-slate-400 mb-1">Total APIs</p>
+                  <p className="text-2xl font-bold text-white">{apiDetails.total_endpoints}</p>
+                </div>
+                <div className="bg-emerald-500/10 rounded-lg p-4">
+                  <p className="text-xs text-emerald-400 mb-1">Healthy</p>
+                  <p className="text-2xl font-bold text-emerald-400">{apiDetails.healthy_count}</p>
+                </div>
+                <div className="bg-orange-500/10 rounded-lg p-4">
+                  <p className="text-xs text-orange-400 mb-1">Slow</p>
+                  <p className="text-2xl font-bold text-orange-400">{apiDetails.slow_count}</p>
+                </div>
+                <div className="bg-red-500/10 rounded-lg p-4">
+                  <p className="text-xs text-red-400 mb-1">Failed</p>
+                  <p className="text-2xl font-bold text-red-400">{apiDetails.failed_count}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* API Endpoints List */}
+            <div className="p-6 space-y-3">
+              <h3 className="text-lg font-semibold text-white mb-4">Individual API Status</h3>
+              {apiDetails.endpoints.map((endpoint, index) => (
+                <div
+                  key={index}
+                  className={`p-4 rounded-lg border-2 transition-all ${
+                    endpoint.status === 'healthy'
+                      ? 'bg-emerald-500/5 border-emerald-500/30'
+                      : endpoint.status === 'slow'
+                      ? 'bg-orange-500/5 border-orange-500/30'
+                      : 'bg-red-500/5 border-red-500/30'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                          endpoint.status === 'healthy'
+                            ? 'bg-emerald-500/20'
+                            : endpoint.status === 'slow'
+                            ? 'bg-orange-500/20'
+                            : 'bg-red-500/20'
+                        }`}
+                      >
+                        {endpoint.status === 'healthy' ? (
+                          <CheckCircle
+                            className={`w-5 h-5 ${
+                              endpoint.status === 'healthy'
+                                ? 'text-emerald-400'
+                                : endpoint.status === 'slow'
+                                ? 'text-orange-400'
+                                : 'text-red-400'
+                            }`}
+                          />
+                        ) : endpoint.status === 'slow' ? (
+                          <AlertCircle className="w-5 h-5 text-orange-400" />
+                        ) : (
+                          <XCircle className="w-5 h-5 text-red-400" />
+                        )}
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-white">{endpoint.name}</h4>
+                        <p className="text-xs text-slate-400 font-mono">{endpoint.endpoint}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div
+                        className={`px-3 py-1 rounded-full text-xs font-medium mb-1 ${
+                          endpoint.status === 'healthy'
+                            ? 'bg-emerald-500/20 text-emerald-400'
+                            : endpoint.status === 'slow'
+                            ? 'bg-orange-500/20 text-orange-400'
+                            : 'bg-red-500/20 text-red-400'
+                        }`}
+                      >
+                        {endpoint.status.toUpperCase()}
+                      </div>
+                      <p className="text-xs text-slate-400">
+                        {endpoint.response_time > 0 ? `${endpoint.response_time}ms` : 'N/A'}
+                      </p>
+                    </div>
+                  </div>
+                  <p
+                    className={`text-sm ${
+                      endpoint.status === 'healthy'
+                        ? 'text-emerald-400'
+                        : endpoint.status === 'slow'
+                        ? 'text-orange-400'
+                        : 'text-red-400'
+                    }`}
+                  >
+                    {endpoint.message}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="sticky bottom-0 bg-slate-800 border-t border-slate-700 p-6 flex justify-end">
+              <button
+                onClick={() => setShowApiModal(false)}
+                className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

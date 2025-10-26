@@ -28,7 +28,7 @@ def check_api_health():
         return {
             "status": "healthy",
             "response_time": response_time,
-            "message": "API operational"
+            "message": "API Operational"
         }
     except Exception as e:
         return {
@@ -36,6 +36,97 @@ def check_api_health():
             "response_time": int((time.time() - start_time) * 1000),
             "message": f"API health check failed: {str(e)}"
         }
+
+
+def check_api_endpoints(db: Session):
+    """Check individual API endpoints for detailed health status"""
+    endpoints = []
+    
+    # Authentication API
+    try:
+        start = time.time()
+        db.query(User).first()
+        response_time = int((time.time() - start) * 1000)
+        endpoints.append({
+            "name": "Authentication API",
+            "endpoint": "/auth/login",
+            "status": "healthy" if response_time < 100 else "slow",
+            "response_time": response_time,
+            "message": "Operational" if response_time < 100 else f"Slow ({response_time}ms)"
+        })
+    except Exception as e:
+        endpoints.append({
+            "name": "Authentication API",
+            "endpoint": "/auth/login",
+            "status": "failed",
+            "response_time": 0,
+            "message": f"Failed: {str(e)}"
+        })
+    
+    # Admin API
+    try:
+        start = time.time()
+        db.query(Organization).first()
+        response_time = int((time.time() - start) * 1000)
+        endpoints.append({
+            "name": "Admin API",
+            "endpoint": "/admin/users",
+            "status": "healthy" if response_time < 100 else "slow",
+            "response_time": response_time,
+            "message": "Operational" if response_time < 100 else f"Slow ({response_time}ms)"
+        })
+    except Exception as e:
+        endpoints.append({
+            "name": "Admin API",
+            "endpoint": "/admin/users",
+            "status": "failed",
+            "response_time": 0,
+            "message": f"Failed: {str(e)}"
+        })
+    
+    # License API
+    try:
+        start = time.time()
+        db.query(Organization).filter(Organization.license_expires_at != None).first()
+        response_time = int((time.time() - start) * 1000)
+        endpoints.append({
+            "name": "License API",
+            "endpoint": "/license/validate",
+            "status": "healthy" if response_time < 100 else "slow",
+            "response_time": response_time,
+            "message": "Operational" if response_time < 100 else f"Slow ({response_time}ms)"
+        })
+    except Exception as e:
+        endpoints.append({
+            "name": "License API",
+            "endpoint": "/license/validate",
+            "status": "failed",
+            "response_time": 0,
+            "message": f"Failed: {str(e)}"
+        })
+    
+    # Database API
+    try:
+        start = time.time()
+        db.execute("SELECT 1")
+        response_time = int((time.time() - start) * 1000)
+        endpoints.append({
+            "name": "Database Connection",
+            "endpoint": "/database",
+            "status": "healthy" if response_time < 50 else "slow",
+            "response_time": response_time,
+            "message": "Operational" if response_time < 50 else f"Slow ({response_time}ms)"
+        })
+    except Exception as e:
+        endpoints.append({
+            "name": "Database Connection",
+            "endpoint": "/database",
+            "status": "failed",
+            "response_time": 0,
+            "message": f"Failed: {str(e)}"
+        })
+    
+    return endpoints
 
 
 @router.get("/system/stats")
@@ -88,4 +179,37 @@ async def get_system_stats(
         "failed_logins_today": failed_logins_today,
         "ip_violations_today": ip_violations_today,
         "api_health": api_health
+    }
+
+
+@router.get("/system/api-health")
+async def get_api_health_details(
+    current_admin: User = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    """Get detailed API health status for all endpoints (Admin only)"""
+    endpoints = check_api_endpoints(db)
+    
+    # Calculate overall status
+    failed_count = sum(1 for e in endpoints if e["status"] == "failed")
+    slow_count = sum(1 for e in endpoints if e["status"] == "slow")
+    
+    if failed_count > 0:
+        overall_status = "failed"
+        overall_message = f"{failed_count} API(s) failed"
+    elif slow_count > 0:
+        overall_status = "slow"
+        overall_message = f"{slow_count} API(s) running slow"
+    else:
+        overall_status = "healthy"
+        overall_message = "All APIs operational"
+    
+    return {
+        "overall_status": overall_status,
+        "overall_message": overall_message,
+        "total_endpoints": len(endpoints),
+        "healthy_count": sum(1 for e in endpoints if e["status"] == "healthy"),
+        "slow_count": slow_count,
+        "failed_count": failed_count,
+        "endpoints": endpoints
     }
