@@ -81,8 +81,11 @@ async def get_license_status(
     if not organization:
         raise HTTPException(status_code=404, detail="Organization not found")
     
-    # Calculate days remaining
-    days_remaining = (organization.license_expires_at - datetime.utcnow()).days
+    # Calculate days remaining (using date comparison, not datetime)
+    # This ensures consistency with is_license_valid() logic
+    expiration_date = organization.license_expires_at.date()
+    current_date = datetime.utcnow().date()
+    days_remaining = (expiration_date - current_date).days
     
     # Count users
     user_count = db.query(User).filter(
