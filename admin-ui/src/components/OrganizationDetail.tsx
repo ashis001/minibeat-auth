@@ -172,7 +172,8 @@ export const OrganizationDetail: React.FC = () => {
     try {
       await userApi.updateUser(editingUser.id, {
         full_name: editingUser.full_name,
-        is_active: editingUser.is_active
+        is_active: editingUser.is_active,
+        role: editingUser.role
       });
       setShowEditUserModal(false);
       setEditingUser(null);
