@@ -23,6 +23,7 @@ class AuditLogResponse(BaseModel):
     ip_address: Optional[str]
     status: Optional[str]
     details: Optional[dict]
+    error_message: Optional[str]
 
 
 async def create_audit_log(
@@ -77,7 +78,12 @@ async def get_audit_logs(
     
     # Filter by action
     if action:
-        query = query.filter(AuditLog.action == action)
+        try:
+            action_enum = AuditAction(action.lower())
+            query = query.filter(AuditLog.action == action_enum)
+        except ValueError:
+            # Invalid action provided, return empty result
+            return []
     
     # Filter by date range
     start_date = datetime.utcnow() - timedelta(days=days)
@@ -96,7 +102,8 @@ async def get_audit_logs(
             target_type=log.target_type,
             ip_address=log.ip_address,
             status=log.status,
-            details=log.details
+            details=log.details,
+            error_message=log.error_message
         )
         for log in logs
     ]
