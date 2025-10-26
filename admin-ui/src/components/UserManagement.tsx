@@ -25,7 +25,7 @@ export const UserManagement: React.FC = () => {
     email: '',
     password: '',
     full_name: '',
-    role: 'user',
+    role: 'developer',
     organization_id: '',
   });
 
@@ -58,7 +58,7 @@ export const UserManagement: React.FC = () => {
         email: '',
         password: '',
         full_name: '',
-        role: 'user',
+        role: 'developer',
         organization_id: '',
       });
       loadData();
@@ -152,13 +152,17 @@ export const UserManagement: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      user.role === 'admin'
+                      user.role.toLowerCase() === 'admin'
                         ? 'bg-purple-900/50 text-purple-300'
-                        : user.role === 'user'
+                        : user.role.toLowerCase() === 'developer'
                         ? 'bg-blue-900/50 text-blue-300'
+                        : user.role.toLowerCase() === 'tester'
+                        ? 'bg-orange-900/50 text-orange-300'
+                        : user.role.toLowerCase() === 'ops'
+                        ? 'bg-emerald-900/50 text-emerald-300'
                         : 'bg-slate-700 text-slate-300'
                     }`}>
-                      {user.role}
+                      {user.role.toUpperCase()}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -270,10 +274,11 @@ export const UserManagement: React.FC = () => {
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                   className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white"
+                  required
                 >
-                  <option value="admin">Admin</option>
-                  <option value="user">User</option>
-                  <option value="viewer">Viewer</option>
+                  <option value="developer">Developer - Full Access</option>
+                  <option value="tester">Tester - Validator, Dashboard, Reconciliator</option>
+                  <option value="ops">Ops - Validator & Dashboard Only</option>
                 </select>
               </div>
 
