@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import String
 from datetime import datetime, timedelta
 import time
 from app.db.database import get_db
@@ -7,7 +8,6 @@ from app.models.user import User, UserRole
 from app.models.organization import Organization
 from app.models.audit_log import AuditLog, AuditAction
 from app.api.admin import get_current_admin
-import time
 
 router = APIRouter(prefix="/admin", tags=["System"])
 
@@ -173,7 +173,7 @@ async def get_system_stats(
     ip_violations_today = db.query(AuditLog).filter(
         AuditLog.action == AuditAction.LOGIN_FAILED,
         AuditLog.timestamp >= today_start,
-        AuditLog.details['reason'].astext == 'ip_not_whitelisted'
+        AuditLog.details['reason'].cast(String) == 'ip_not_whitelisted'
     ).count()
     
     # API health - use real health check
