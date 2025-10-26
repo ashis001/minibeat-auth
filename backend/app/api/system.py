@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import String
+from sqlalchemy import String, text
 from datetime import datetime, timedelta
 import time
 from app.db.database import get_db
