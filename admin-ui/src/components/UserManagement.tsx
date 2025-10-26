@@ -254,12 +254,12 @@ export const UserManagement: React.FC = () => {
                 <select
                   value={formData.organization_id}
                   onChange={(e) => setFormData({ ...formData, organization_id: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   required
                 >
-                  <option value="">Select Organization</option>
+                  <option value="" className="bg-slate-900 text-white">Select Organization</option>
                   {organizations.map((org) => (
-                    <option key={org.id} value={org.id}>
+                    <option key={org.id} value={org.id} className="bg-slate-900 text-white">
                       {org.name}
                     </option>
                   ))}
@@ -273,12 +273,12 @@ export const UserManagement: React.FC = () => {
                 <select
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white"
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   required
                 >
-                  <option value="developer">Developer - Full Access</option>
-                  <option value="tester">Tester - Validator, Dashboard, Reconciliator</option>
-                  <option value="ops">Ops - Validator & Dashboard Only</option>
+                  <option value="developer" className="bg-slate-900 text-white">Developer - Full Access</option>
+                  <option value="tester" className="bg-slate-900 text-white">Tester - Validator, Dashboard, Reconciliator</option>
+                  <option value="ops" className="bg-slate-900 text-white">Ops - Validator & Dashboard Only</option>
                 </select>
               </div>
 
