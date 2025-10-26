@@ -269,8 +269,9 @@ export const UserManagement: React.FC = () => {
                 <select
                   value={formData.organization_id}
                   onChange={(e) => setFormData({ ...formData, organization_id: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white appearance-none"
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-emerald-500"
                   required
+                  tabIndex={0}
                 >
                   <option value="" className="bg-slate-900 text-white">Select Organization</option>
                   {organizations.map((org) => (
@@ -288,8 +289,9 @@ export const UserManagement: React.FC = () => {
                 <select
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white appearance-none"
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-emerald-500"
                   required
+                  tabIndex={0}
                 >
                   <option value="developer" className="bg-slate-900 text-white">Developer - Full Access</option>
                   <option value="tester" className="bg-slate-900 text-white">Tester - Validator, Dashboard, Reconciliator</option>
