@@ -8,9 +8,10 @@ from app.db.database import Base
 
 
 class UserRole(str, enum.Enum):
-    ADMIN = "admin"
-    USER = "user"
-    VIEWER = "viewer"
+    ADMIN = "admin"          # System admin - full access to auth portal
+    DEVELOPER = "developer"  # Full access to all MiniBeast modules
+    TESTER = "tester"        # Access to Validator, Dashboard, Reconciliator
+    OPS = "ops"              # Access to Validator and Dashboard only
 
 
 class User(Base):
