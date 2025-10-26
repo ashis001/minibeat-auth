@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Mail, Lock, AlertCircle } from 'lucide-react';
+import { Lock, ArrowRight } from 'lucide-react';
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -27,85 +27,111 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <div className="w-full max-w-md px-6">
-        <div className="bg-slate-800 rounded-2xl shadow-2xl p-8 border border-slate-700">
-          {/* Logo & Title */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500 rounded-full mb-4">
-              <Shield className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-3xl font-bold text-white mb-2">Auth Server</h1>
-            <p className="text-slate-400">Sign in to manage access</p>
+    <div className="min-h-screen flex">
+      {/* Left side - Branding */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-emerald-600 to-emerald-500 relative overflow-hidden">
+        {/* Subtle pattern overlay */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundSize: '40px 40px'
+          }}></div>
+        </div>
+
+        <div className="relative z-10 flex flex-col justify-center items-center px-16 w-full">
+          {/* Center Branding */}
+          <div className="text-center">
+            <h1 className="text-7xl font-black text-slate-900 mb-4 tracking-tight">
+              MiniBeast <span className="text-6xl">{'{Eagle}'}</span>
+            </h1>
+            <p className="text-xl text-slate-800 font-light italic tracking-wide">
+              a product of <span className="font-semibold">Dataction</span>
+            </p>
           </div>
+        </div>
 
-          {/* Error Message */}
-          {error && (
-            <div className="mb-6 p-4 bg-red-900/20 border border-red-500 rounded-lg flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-              <div className="flex-1">
-                <p className="text-red-400 text-sm">{error}</p>
-              </div>
+        {/* Bottom left watermark */}
+        <div className="absolute bottom-8 left-8 text-slate-800/80">
+          <p className="text-sm font-medium">© 2025 Dataction</p>
+        </div>
+      </div>
+
+      {/* Right side - Login Form */}
+      <div className="flex-1 flex items-center justify-center p-8 bg-slate-50 relative">
+        <div className="w-full max-w-md">
+          {/* Login card */}
+          <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-slate-900 mb-2">Welcome back</h2>
+              <p className="text-slate-600">Sign in to Auth Server</p>
             </div>
-          )}
 
-          {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                Email
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+            {/* Error Message */}
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-600 text-sm">{error}</p>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium text-slate-700">
+                  Email address
+                </label>
                 <input
+                  id="email"
                   type="email"
+                  placeholder="admin@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                  placeholder="admin@example.com"
                   required
+                  disabled={isLoading}
+                  className="w-full h-12 px-4 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-slate-900"
                 />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                  placeholder="••••••••"
-                  required
-                />
+              <div className="space-y-2">
+                <label htmlFor="password" className="text-sm font-medium text-slate-700">
+                  Password
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+                  <input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    disabled={isLoading}
+                    className="w-full h-12 pl-11 pr-4 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-slate-900"
+                  />
+                </div>
               </div>
-            </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {isLoading ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Signing in...
-                </>
-              ) : (
-                'Sign In'
-              )}
-            </button>
-          </form>
+              <button
+                type="submit"
+                className="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-lg hover:shadow-xl transition-all duration-200 rounded-lg"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Signing in...
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center gap-2">
+                    Sign in to Auth Server
+                    <ArrowRight className="h-5 w-5" />
+                  </div>
+                )}
+              </button>
+            </form>
+          </div>
 
-          {/* Info */}
-          <div className="mt-6 text-center">
-            <p className="text-xs text-slate-500">
-              Contact your administrator for access
-            </p>
+          {/* Version watermark */}
+          <div className="absolute bottom-8 right-8">
+            <p className="text-xs text-slate-400 font-light">Version 2.0</p>
           </div>
         </div>
       </div>
