@@ -205,15 +205,12 @@ export const UserManagement: React.FC = () => {
 
       {/* Create User Modal */}
       {showCreateModal && (
-        <div 
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setShowCreateModal(false);
-            }
-          }}
-        >
-          <div className="bg-slate-800 rounded-lg p-6 w-full max-w-md border border-slate-700 relative z-10">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div 
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setShowCreateModal(false)}
+          />
+          <div className="bg-slate-800 rounded-lg p-6 w-full max-w-md border border-slate-700 relative z-50 m-4" onClick={(e) => e.stopPropagation()}>
             <div className="absolute top-4 right-4">
               <button
                 type="button"
@@ -226,7 +223,7 @@ export const UserManagement: React.FC = () => {
               </button>
             </div>
             <h3 className="text-xl font-bold text-white mb-4">Create New User</h3>
-            <form onSubmit={handleCreateUser} className="space-y-4 relative z-20">
+            <form onSubmit={handleCreateUser} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">
                   Email *
@@ -272,8 +269,7 @@ export const UserManagement: React.FC = () => {
                 <select
                   value={formData.organization_id}
                   onChange={(e) => setFormData({ ...formData, organization_id: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                  style={{ pointerEvents: 'auto' }}
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white appearance-none"
                   required
                 >
                   <option value="" className="bg-slate-900 text-white">Select Organization</option>
@@ -292,8 +288,7 @@ export const UserManagement: React.FC = () => {
                 <select
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                  style={{ pointerEvents: 'auto' }}
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded-lg text-white appearance-none"
                   required
                 >
                   <option value="developer" className="bg-slate-900 text-white">Developer - Full Access</option>
