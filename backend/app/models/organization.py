@@ -42,8 +42,18 @@ class Organization(Base):
         return f"<Organization {self.name}>"
     
     def is_license_valid(self):
-        """Check if license is still valid"""
-        return self.is_active and self.license_expires_at > datetime.utcnow()
+        """Check if license is still valid (valid through end of expiration day)"""
+        if not self.is_active:
+            return False
+        
+        # Get current date (no time component)
+        current_date = datetime.utcnow().date()
+        
+        # Get expiration date (no time component)
+        expiration_date = self.license_expires_at.date()
+        
+        # License is valid if expiration date is today or in the future
+        return expiration_date >= current_date
     
     def has_feature(self, feature: str):
         """Check if organization has access to a feature"""
