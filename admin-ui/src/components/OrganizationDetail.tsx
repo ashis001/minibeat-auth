@@ -206,7 +206,7 @@ export const OrganizationDetail: React.FC = () => {
     );
   }
 
-  const daysRemaining = Math.floor((new Date(organization.license_expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+  const daysRemaining = Math.ceil((new Date(organization.license_expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
   const isExpiringSoon = daysRemaining <= 30;
   const { user, logout } = useAuth();
 
