@@ -15,6 +15,7 @@ interface SystemStats {
   api_health: {
     status: string;
     response_time: number;
+    message?: string;
   };
 }
 
@@ -27,8 +28,9 @@ interface RecentActivity {
 
 export const Monitor: React.FC = () => {
   const [stats, setStats] = useState<SystemStats | null>(null);
-  const [recentActivity] = useState<RecentActivity[]>([]);
+  const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchSystemStats();
@@ -38,14 +40,68 @@ export const Monitor: React.FC = () => {
 
   const fetchSystemStats = async () => {
     try {
+      setError(null);
       const token = localStorage.getItem('access_token');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
       const response = await axios.get('http://139.59.22.121:8000/admin/system/stats', {
         headers: { Authorization: `Bearer ${token}` }
       });
+
       setStats(response.data);
+
+      // Generate recent activity based on stats
+      const activities: RecentActivity[] = [];
+
+      if (response.data.paused_organizations > 0) {
+        activities.push({
+          type: 'organization',
+          message: `${response.data.paused_organizations} organization(s) paused`,
+          timestamp: new Date().toLocaleString(),
+          severity: 'warning'
+        });
+      }
+
+      if (response.data.expiring_soon > 0) {
+        activities.push({
+          type: 'license',
+          message: `${response.data.expiring_soon} license(s) expiring soon`,
+          timestamp: new Date().toLocaleString(),
+          severity: 'warning'
+        });
+      }
+
+      if (response.data.failed_logins_today > 0) {
+        activities.push({
+          type: 'security',
+          message: `${response.data.failed_logins_today} failed login attempts today`,
+          timestamp: new Date().toLocaleString(),
+          severity: 'error'
+        });
+      }
+
+      if (activities.length === 0) {
+        activities.push({
+          type: 'system',
+          message: 'All systems operational',
+          timestamp: new Date().toLocaleString(),
+          severity: 'info'
+        });
+      }
+
+      setRecentActivity(activities);
       setLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to fetch system stats:', error);
+      setError(error.response?.data?.detail || error.message || 'Failed to load system stats');
+      setRecentActivity([{
+        type: 'error',
+        message: 'Failed to load system stats',
+        timestamp: new Date().toLocaleString(),
+        severity: 'error'
+      }]);
       setLoading(false);
     }
   };
@@ -54,6 +110,24 @@ export const Monitor: React.FC = () => {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-white mb-2">Failed to Load System Stats</h3>
+          <p className="text-slate-400 mb-4">{error}</p>
+          <button
+            onClick={fetchSystemStats}
+            className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
@@ -79,6 +153,9 @@ export const Monitor: React.FC = () => {
             <div>
               <h3 className="text-lg font-semibold text-white">API Status</h3>
               <p className="text-sm text-slate-400">Response Time: {stats?.api_health.response_time}ms</p>
+              {stats?.api_health.message && (
+                <p className="text-xs text-slate-500 mt-1">{stats.api_health.message}</p>
+              )}
             </div>
           </div>
           <div className={`px-4 py-2 rounded-full text-sm font-medium ${
