@@ -43,10 +43,15 @@ export const Login: React.FC = () => {
       <div className="relative z-10 w-full max-w-md mx-4">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-5xl font-black text-brand-green mb-2 tracking-tight">
-            MiniBeast <span className="font-black">{'{Admin Panel}'}</span>
-          </h1>
-          <p className="text-lg text-brand-green/80 font-light italic">
+          <div className="relative inline-block">
+            <h1 className="text-5xl font-black text-brand-green tracking-tight">
+              MiniBeast
+            </h1>
+            <p className="absolute -bottom-2 right-0 text-xs font-medium text-white">
+              Admin Panel
+            </p>
+          </div>
+          <p className="text-lg text-brand-green/80 font-light italic mt-6">
             a product of <span className="font-semibold">Dataction</span>
           </p>
         </div>
