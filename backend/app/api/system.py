@@ -8,7 +8,7 @@ from app.models.organization import Organization
 from app.api.admin import get_current_admin
 import time
 
-router = APIRouter()
+router = APIRouter(prefix="/admin", tags=["System"])
 
 
 def check_api_health():
