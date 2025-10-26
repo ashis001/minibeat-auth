@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, text
 from datetime import datetime, timedelta
 from app.db.database import get_db
 from app.models.user import User, UserRole
@@ -108,7 +108,7 @@ def check_api_endpoints(db: Session):
     # Database API
     try:
         start = time.time()
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         response_time = int((time.time() - start) * 1000)
         endpoints.append({
             "name": "Database Connection",
