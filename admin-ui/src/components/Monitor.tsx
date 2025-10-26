@@ -44,6 +44,21 @@ interface ApiHealthDetails {
   endpoints: ApiEndpoint[];
 }
 
+interface FailedLoginLog {
+  id: string;
+  timestamp: string;
+  user_email: string;
+  ip_address: string;
+  organization_id: string | null;
+  status: string;
+  details: {
+    reason: string;
+    email: string;
+    organization?: string;
+  };
+  error_message: string;
+}
+
 export const Monitor: React.FC = () => {
   const [stats, setStats] = useState<SystemStats | null>(null);
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
@@ -52,6 +67,10 @@ export const Monitor: React.FC = () => {
   const [showApiModal, setShowApiModal] = useState(false);
   const [apiDetails, setApiDetails] = useState<ApiHealthDetails | null>(null);
   const [loadingApiDetails, setLoadingApiDetails] = useState(false);
+  const [showFailedLoginsModal, setShowFailedLoginsModal] = useState(false);
+  const [failedLogins, setFailedLogins] = useState<FailedLoginLog[]>([]);
+  const [loadingFailedLogins, setLoadingFailedLogins] = useState(false);
+  const [selectedLog, setSelectedLog] = useState<FailedLoginLog | null>(null);
 
   useEffect(() => {
     fetchSystemStats();
@@ -140,6 +159,22 @@ export const Monitor: React.FC = () => {
     } catch (error: any) {
       console.error('Failed to fetch API details:', error);
       setLoadingApiDetails(false);
+    }
+  };
+
+  const fetchFailedLogins = async () => {
+    try {
+      setLoadingFailedLogins(true);
+      const token = localStorage.getItem('access_token');
+      const response = await axios.get('http://139.59.22.121:8000/admin/audit/logs?action=login_failed&days=7&limit=50', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setFailedLogins(response.data);
+      setShowFailedLoginsModal(true);
+      setLoadingFailedLogins(false);
+    } catch (error: any) {
+      console.error('Failed to fetch failed logins:', error);
+      setLoadingFailedLogins(false);
     }
   };
 
@@ -307,6 +342,15 @@ export const Monitor: React.FC = () => {
               <span className="text-red-400 font-medium">{stats?.ip_violations_today || 0}</span>
             </div>
           </div>
+          {(stats?.failed_logins_today || 0) > 0 && (
+            <button
+              onClick={fetchFailedLogins}
+              disabled={loadingFailedLogins}
+              className="mt-4 w-full px-3 py-2 bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded-lg text-sm font-medium transition-colors"
+            >
+              {loadingFailedLogins ? 'Loading...' : 'View Details'}
+            </button>
+          )}
         </div>
       </div>
 
@@ -340,6 +384,173 @@ export const Monitor: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Failed Logins Details Modal */}
+      {showFailedLoginsModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 rounded-2xl w-full max-w-5xl border-2 border-slate-700 shadow-2xl max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-slate-800 border-b border-slate-700 p-6 flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-white mb-1">Failed Login Attempts</h2>
+                <p className="text-sm text-slate-400">Last 7 days - {failedLogins.length} attempts</p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowFailedLoginsModal(false);
+                  setSelectedLog(null);
+                }}
+                className="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition-colors"
+              >
+                <XCircle className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Failed Logins List */}
+            <div className="p-6">
+              {failedLogins.length > 0 ? (
+                <div className="space-y-3">
+                  {failedLogins.map((log) => (
+                    <div
+                      key={log.id}
+                      className="p-4 bg-red-500/5 border border-red-500/30 rounded-lg hover:bg-red-500/10 transition-colors"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center">
+                              <XCircle className="w-4 h-4 text-red-400" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-white">{log.user_email || 'Unknown User'}</h4>
+                              <p className="text-xs text-slate-400">{new Date(log.timestamp).toLocaleString()}</p>
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-3 text-sm mt-3">
+                            <div>
+                              <p className="text-slate-400 text-xs">IP Address</p>
+                              <p className="text-white font-mono">{log.ip_address || 'N/A'}</p>
+                            </div>
+                            <div>
+                              <p className="text-slate-400 text-xs">Reason</p>
+                              <p className="text-red-400 font-medium">{log.error_message}</p>
+                            </div>
+                            {log.details?.organization && (
+                              <div>
+                                <p className="text-slate-400 text-xs">Organization</p>
+                                <p className="text-white">{log.details.organization}</p>
+                              </div>
+                            )}
+                            <div>
+                              <p className="text-slate-400 text-xs">Failure Type</p>
+                              <p className="text-orange-400">{log.details?.reason?.replace('_', ' ').toUpperCase()}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setSelectedLog(log)}
+                          className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-sm rounded-lg transition-colors"
+                        >
+                          Details
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 text-slate-500">
+                  <Shield className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                  <p>No failed login attempts in the last 7 days</p>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="sticky bottom-0 bg-slate-800 border-t border-slate-700 p-6 flex justify-end">
+              <button
+                onClick={() => {
+                  setShowFailedLoginsModal(false);
+                  setSelectedLog(null);
+                }}
+                className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Selected Log Details Modal */}
+      {selectedLog && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[60] p-4">
+          <div className="bg-slate-800 rounded-xl w-full max-w-2xl border-2 border-red-500/30 shadow-2xl">
+            <div className="bg-red-500/10 border-b border-red-500/30 p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
+                    <XCircle className="w-6 h-6 text-red-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Login Attempt Details</h3>
+                    <p className="text-sm text-red-400">Security Incident Report</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedLog(null)}
+                  className="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition-colors"
+                >
+                  <XCircle className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-slate-700/50 p-4 rounded-lg">
+                  <p className="text-xs text-slate-400 mb-1">Email / Username</p>
+                  <p className="text-white font-medium">{selectedLog.user_email}</p>
+                </div>
+                <div className="bg-slate-700/50 p-4 rounded-lg">
+                  <p className="text-xs text-slate-400 mb-1">IP Address</p>
+                  <p className="text-white font-mono">{selectedLog.ip_address || 'Not captured'}</p>
+                </div>
+                <div className="bg-slate-700/50 p-4 rounded-lg">
+                  <p className="text-xs text-slate-400 mb-1">Timestamp</p>
+                  <p className="text-white">{new Date(selectedLog.timestamp).toLocaleString()}</p>
+                </div>
+                <div className="bg-slate-700/50 p-4 rounded-lg">
+                  <p className="text-xs text-slate-400 mb-1">Status</p>
+                  <p className="text-red-400 font-medium">{selectedLog.status.toUpperCase()}</p>
+                </div>
+              </div>
+              <div className="bg-red-500/10 border border-red-500/30 p-4 rounded-lg">
+                <p className="text-xs text-red-400 mb-2">Failure Reason</p>
+                <p className="text-white font-medium">{selectedLog.error_message}</p>
+              </div>
+              {selectedLog.details?.organization && (
+                <div className="bg-slate-700/50 p-4 rounded-lg">
+                  <p className="text-xs text-slate-400 mb-2">Organization</p>
+                  <p className="text-white">{selectedLog.details.organization}</p>
+                </div>
+              )}
+              <div className="bg-slate-700/50 p-4 rounded-lg">
+                <p className="text-xs text-slate-400 mb-2">Additional Details</p>
+                <pre className="text-xs text-slate-300 bg-slate-900 p-3 rounded overflow-auto max-h-40">
+                  {JSON.stringify(selectedLog.details, null, 2)}
+                </pre>
+              </div>
+            </div>
+            <div className="bg-slate-900/50 p-6 flex justify-end gap-3">
+              <button
+                onClick={() => setSelectedLog(null)}
+                className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* API Health Details Modal */}
       {showApiModal && apiDetails && (

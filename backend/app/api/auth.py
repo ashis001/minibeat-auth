@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from app.db.database import get_db, get_redis
 from app.models.user import User
 from app.models.organization import Organization
+from app.models.audit_log import AuditLog, AuditAction
 from app.schemas.auth import LoginRequest, Token, RefreshTokenRequest, ValidateTokenRequest, ValidateTokenResponse
 from app.core.security import create_access_token, create_refresh_token, verify_password, verify_token
 from app.core.permissions import get_user_permissions
@@ -27,9 +28,36 @@ async def login(
     # Find user
     user = db.query(User).filter(User.email == credentials.email).first()
     if not user or not verify_password(credentials.password, user.password_hash):
+        # Log failed login attempt
+        audit_log = AuditLog(
+            action=AuditAction.LOGIN_FAILED,
+            user_email=credentials.email,
+            organization_id=user.organization_id if user else None,
+            ip_address=client_ip,
+            user_agent=request.headers.get("User-Agent"),
+            status="failed",
+            error_message="Invalid email or password",
+            details={"reason": "invalid_credentials", "email": credentials.email}
+        )
+        db.add(audit_log)
+        db.commit()
         raise HTTPException(status_code=401, detail="Invalid email or password")
     
     if not user.is_active:
+        # Log failed login - inactive user
+        audit_log = AuditLog(
+            action=AuditAction.LOGIN_FAILED,
+            user_id=user.id,
+            user_email=user.email,
+            organization_id=user.organization_id,
+            ip_address=client_ip,
+            user_agent=request.headers.get("User-Agent"),
+            status="failed",
+            error_message="User account is disabled",
+            details={"reason": "user_inactive", "email": user.email}
+        )
+        db.add(audit_log)
+        db.commit()
         raise HTTPException(status_code=403, detail="User account is disabled")
     
     # Get organization
@@ -38,18 +66,73 @@ async def login(
         raise HTTPException(status_code=404, detail="Organization not found")
     
     if not organization.is_active:
+        # Log failed login - inactive organization
+        audit_log = AuditLog(
+            action=AuditAction.LOGIN_FAILED,
+            user_id=user.id,
+            user_email=user.email,
+            organization_id=organization.id,
+            ip_address=client_ip,
+            user_agent=request.headers.get("User-Agent"),
+            status="failed",
+            error_message="Organization is disabled",
+            details={"reason": "organization_inactive", "organization": organization.name}
+        )
+        db.add(audit_log)
+        db.commit()
         raise HTTPException(status_code=403, detail="Organization is disabled")
     
     # Check license validity
     if not organization.is_license_valid():
+        # Log failed login - expired license
+        audit_log = AuditLog(
+            action=AuditAction.LOGIN_FAILED,
+            user_id=user.id,
+            user_email=user.email,
+            organization_id=organization.id,
+            ip_address=client_ip,
+            user_agent=request.headers.get("User-Agent"),
+            status="failed",
+            error_message="Organization license has expired",
+            details={"reason": "license_expired", "organization": organization.name}
+        )
+        db.add(audit_log)
+        db.commit()
         raise HTTPException(status_code=403, detail="Organization license has expired")
     
     # Check IP whitelist
     if not check_ip_whitelist(client_ip, organization.allowed_ips):
+        # Log failed login - IP not whitelisted
+        audit_log = AuditLog(
+            action=AuditAction.LOGIN_FAILED,
+            user_id=user.id,
+            user_email=user.email,
+            organization_id=organization.id,
+            ip_address=client_ip,
+            user_agent=request.headers.get("User-Agent"),
+            status="failed",
+            error_message=f"IP address {client_ip} is not whitelisted",
+            details={"reason": "ip_not_whitelisted", "ip": client_ip, "allowed_ips": organization.allowed_ips}
+        )
+        db.add(audit_log)
+        db.commit()
         raise HTTPException(
             status_code=403,
             detail=f"IP address {client_ip} is not whitelisted for this organization"
         )
+    
+    # Log successful login
+    audit_log = AuditLog(
+        action=AuditAction.LOGIN,
+        user_id=user.id,
+        user_email=user.email,
+        organization_id=organization.id,
+        ip_address=client_ip,
+        user_agent=request.headers.get("User-Agent"),
+        status="success",
+        details={"organization": organization.name, "role": user.role.value}
+    )
+    db.add(audit_log)
     
     # Update last login
     user.last_login = datetime.utcnow()
