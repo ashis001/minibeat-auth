@@ -605,7 +605,7 @@ const ArchitectureSection = () => {
           </div>
 
           {/* Center - Flow Lines */}
-          <div className="col-span-2 flex flex-col items-center justify-center space-y-16 relative py-8">
+          <div className="col-span-2 flex flex-col items-center justify-center space-y-8 relative py-8">
             {/* JWT Token Flow */}
             <div className="relative w-full mb-2">
               <div className="flow-line w-full h-1 bg-gradient-to-r from-purple-500 via-brand-green to-blue-500 rounded-full">
