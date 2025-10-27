@@ -43,17 +43,13 @@ export const Login: React.FC = () => {
       <div className="relative z-10 w-full max-w-md mx-4">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="relative inline-block">
-            <h1 className="text-5xl font-black text-brand-green tracking-tight">
-              MiniBeast
-            </h1>
-            <p className="absolute -bottom-2 right-0 text-xs font-medium text-white">
-              Admin Panel
-            </p>
+          <div className="flex justify-center">
+            <img 
+              src="https://cdn.prod.website-files.com/66d705faac628063be399fde/66dd39e12f6ed23bce7b7321_DataAction-%20Green.svg" 
+              alt="DataAction" 
+              className="h-16 w-auto"
+            />
           </div>
-          <p className="text-lg text-brand-green/80 font-light italic mt-6">
-            a product of <span className="font-semibold">Dataction</span>
-          </p>
         </div>
 
         {/* Glass-style Login card */}
@@ -63,9 +59,9 @@ export const Login: React.FC = () => {
           
           {/* Content */}
           <div className="relative p-8">
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-white mb-2">Welcome back</h2>
-              <p className="text-sm text-slate-400">Sign in to Auth Server</p>
+            <div className="mb-8 text-center">
+              <h2 className="text-3xl font-black text-white mb-2">MiniBeast</h2>
+              <p className="text-sm text-slate-400">Admin Portal</p>
             </div>
 
             {/* Error Message */}
