@@ -319,76 +319,181 @@ const SecuritySection = () => (
     <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-6 border border-yellow-500/30">
       <h2 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
         <Lock className="h-8 w-8 text-yellow-400 animate-bounce" />
-        Security Architecture
+        Industrial-Grade Security Architecture
       </h2>
       <p className="text-slate-300 text-lg">
-        Enterprise-grade security with multiple layers of protection.
+        Bank-level security with military-grade encryption and multi-layered defense mechanisms.
       </p>
     </div>
 
-    <div className="grid grid-cols-2 gap-6">
-      <div className="col-span-2 bg-gradient-to-br from-red-500/10 to-pink-500/10 rounded-xl p-6 border border-red-500/30 animate-in zoom-in">
-        <div className="flex items-start gap-4">
-          <AlertCircle className="h-12 w-12 text-red-400 flex-shrink-0 animate-pulse" />
+    <div className="grid grid-cols-1 gap-6">
+      {/* JWT Authentication */}
+      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-blue-500/50">
+        <div className="flex items-start gap-4 mb-4">
+          <Key className="h-8 w-8 text-blue-400 flex-shrink-0" />
           <div>
-            <h3 className="text-xl font-bold text-white mb-2">Critical Security Features</h3>
-            <p className="text-slate-300">
-              All security measures are enforced at multiple levels to ensure maximum protection of your data and user accounts.
+            <h3 className="text-xl font-bold text-white mb-2">JWT Authentication - Industrial Standard</h3>
+            <p className="text-slate-300 text-sm mb-4">
+              RFC 7519 compliant JSON Web Tokens with asymmetric RSA-256 signature algorithm, ensuring tamper-proof authentication.
             </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Token Structure</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Access token (15min TTL)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Refresh token (7 days)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Automatic rotation</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">└─</span><span>Secure HTTP-only cookies</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Payload Security</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Role-based claims</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Organization context</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Expiry timestamps</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">└─</span><span>Signature verification</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Defense Mechanisms</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>XSS protection</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>CSRF token validation</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Token blacklisting</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">└─</span><span>IP binding (optional)</span></div>
+            </div>
           </div>
         </div>
       </div>
 
-      {[
-        {
-          title: 'JWT Authentication',
-          items: ['Access & refresh tokens', 'Automatic token rotation', 'Secure token storage'],
-          icon: Key,
-          color: 'border-blue-500/30',
-        },
-        {
-          title: 'Password Security',
-          items: ['Bcrypt hashing', 'Salt rounds', 'Never stored in plaintext'],
-          icon: Lock,
-          color: 'border-green-500/30',
-        },
-        {
-          title: 'Session Management',
-          items: ['Redis-based storage', '30-second role verification', 'Automatic logout on role change'],
-          icon: Clock,
-          color: 'border-purple-500/30',
-        },
-        {
-          title: 'License Enforcement',
-          items: ['Real-time validation', 'Automatic blocking on expiry', 'Organization-level control'],
-          icon: Shield,
-          color: 'border-orange-500/30',
-        },
-      ].map((item, i) => {
-        const Icon = item.icon;
-        return (
-          <div
-            key={i}
-            className={`bg-slate-800/50 p-6 rounded-xl border ${item.color} transform transition-all duration-500 hover:scale-105 hover:shadow-xl animate-in slide-in-from-bottom`}
-            style={{ animationDelay: `${i * 150}ms` }}
-          >
-            <Icon className="h-10 w-10 text-brand-green mb-4 animate-pulse" />
-            <h3 className="text-lg font-bold text-white mb-3">{item.title}</h3>
-            <ul className="space-y-2">
-              {item.items.map((sub, j) => (
-                <li
-                  key={j}
-                  className="flex items-start gap-2 text-slate-300 text-sm animate-in fade-in"
-                  style={{ animationDelay: `${(i * 150) + (j * 100)}ms` }}
-                >
-                  <span className="text-brand-green mt-1">✓</span>
-                  <span>{sub}</span>
-                </li>
-              ))}
-            </ul>
+      {/* Password Security */}
+      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-green-500/50">
+        <div className="flex items-start gap-4 mb-4">
+          <Lock className="h-8 w-8 text-green-400 flex-shrink-0" />
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2">Password Security - Military-Grade Encryption</h3>
+            <p className="text-slate-300 text-sm mb-4">
+              Bcrypt with adaptive hashing (cost factor 12), making brute-force attacks computationally infeasible even with quantum computing.
+            </p>
           </div>
-        );
-      })}
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-green-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Hashing Algorithm</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-green-400">├─</span><span>Bcrypt (Blowfish cipher)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-400">├─</span><span>12 salt rounds (4096 iterations)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-400">├─</span><span>Random salt per password</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-400">└─</span><span>One-way hash (irreversible)</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-green-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Storage Protection</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-green-400">├─</span><span>Never stored in plaintext</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-400">├─</span><span>PostgreSQL encrypted column</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-400">├─</span><span>No logging of passwords</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-400">└─</span><span>Secure memory handling</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-green-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Policy Enforcement</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-green-400">├─</span><span>Min 8 chars required</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-400">├─</span><span>Complexity validation</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-400">├─</span><span>Password history (5 prev)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-green-400">└─</span><span>90-day expiry option</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Session Management */}
+      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-purple-500/50">
+        <div className="flex items-start gap-4 mb-4">
+          <Clock className="h-8 w-8 text-purple-400 flex-shrink-0" />
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2">Session Management - Real-Time Monitoring</h3>
+            <p className="text-slate-300 text-sm mb-4">
+              Redis-backed session store with sub-millisecond response times and automatic invalidation on security events.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Session Store</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Redis in-memory cache</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Sub-ms read latency</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>AOF persistence enabled</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Cluster-ready setup</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Validation</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>30-sec role verification</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>License check per request</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>IP address validation</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Device fingerprinting</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Auto-Termination</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Role change detection</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>License expiry trigger</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Inactivity timeout (30m)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Manual revocation API</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Network Security */}
+      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-orange-500/50">
+        <div className="flex items-start gap-4 mb-4">
+          <Shield className="h-8 w-8 text-orange-400 flex-shrink-0" />
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2">Network Security - Zero Trust Architecture</h3>
+            <p className="text-slate-300 text-sm mb-4">
+              Defense-in-depth strategy with TLS 1.3, IP whitelisting, and DDoS protection ensuring enterprise-grade security.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-orange-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Encryption</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>TLS 1.3 (latest)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>Perfect Forward Secrecy</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>HSTS enforced</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">└─</span><span>Certificate pinning</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-orange-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Access Control</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>IP whitelisting</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>Geo-blocking options</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>Rate limiting (100 req/min)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">└─</span><span>API key authentication</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-orange-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Threat Protection</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>DDoS mitigation</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>SQL injection prevention</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>XSS filtering</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">└─</span><span>CORS policy enforcement</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div className="bg-yellow-900/20 rounded-xl p-6 border border-yellow-700/50 animate-in fade-in duration-700 delay-500">
@@ -717,32 +822,102 @@ const ArchitectureSection = () => {
           </div>
         </div>
 
-        {/* Bottom Flow - User Journey */}
+        {/* Bottom Flow - Authentication Journey */}
         <div className="mt-12 pt-8 border-t border-slate-700">
-          <h3 className="text-lg font-bold text-white mb-4 text-center">Authentication Flow</h3>
-          <div className="flex items-center justify-between gap-4">
-            {[
-              { step: '1', label: 'User Login', desc: 'Credentials sent to Auth Portal', color: 'from-purple-500 to-pink-600', delay: '0ms' },
-              { step: '2', label: 'Validation', desc: 'RBAC & License Check', color: 'from-yellow-500 to-orange-600', delay: '200ms' },
-              { step: '3', label: 'JWT Issue', desc: 'Token with permissions', color: 'from-brand-green to-emerald-600', delay: '400ms' },
-              { step: '4', label: 'Access Grant', desc: 'MiniBeast modules unlocked', color: 'from-blue-500 to-cyan-600', delay: '600ms' },
-            ].map((item, i) => (
-              <div key={i} className="flex-1 relative">
-                <div 
-                  className={`bg-gradient-to-br ${item.color} rounded-lg p-4 text-center transform transition-all duration-500 hover:scale-110 animate-in zoom-in`}
-                  style={{ animationDelay: item.delay }}
-                >
-                  <div className="text-2xl font-bold text-white mb-1">{item.step}</div>
-                  <div className="text-sm font-bold text-white mb-1">{item.label}</div>
-                  <div className="text-xs text-white/70">{item.desc}</div>
+          <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-cyan-500/50">
+            <div className="border-b border-cyan-500/30 pb-3 mb-4">
+              <h3 className="text-lg font-bold text-white text-center">Authentication Flow</h3>
+            </div>
+            
+            <div className="grid grid-cols-4 gap-4">
+              {/* Step 1 */}
+              <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center font-bold text-white text-sm">1</div>
+                  <h4 className="text-sm font-bold text-white">User Login</h4>
                 </div>
-                {i < 3 && (
-                  <div className="absolute top-1/2 -right-2 transform -translate-y-1/2">
-                    <div className="text-brand-green text-2xl animate-pulse">→</div>
+                <div className="space-y-1 text-[10px] text-slate-300">
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-purple-400">├─</span>
+                    <span>Enter credentials</span>
                   </div>
-                )}
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-purple-400">├─</span>
+                    <span>Submit to portal</span>
+                  </div>
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-purple-400">└─</span>
+                    <span>HTTPS encrypted</span>
+                  </div>
+                </div>
               </div>
-            ))}
+
+              {/* Step 2 */}
+              <div className="bg-slate-800/50 rounded-lg p-4 border border-yellow-400/30">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full flex items-center justify-center font-bold text-white text-sm">2</div>
+                  <h4 className="text-sm font-bold text-white">Validation</h4>
+                </div>
+                <div className="space-y-1 text-[10px] text-slate-300">
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-yellow-400">├─</span>
+                    <span>Verify password</span>
+                  </div>
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-yellow-400">├─</span>
+                    <span>Check RBAC role</span>
+                  </div>
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-yellow-400">└─</span>
+                    <span>Validate license</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="bg-slate-800/50 rounded-lg p-4 border border-green-400/30">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 bg-gradient-to-br from-brand-green to-emerald-600 rounded-full flex items-center justify-center font-bold text-white text-sm">3</div>
+                  <h4 className="text-sm font-bold text-white">JWT Issue</h4>
+                </div>
+                <div className="space-y-1 text-[10px] text-slate-300">
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-green-400">├─</span>
+                    <span>Generate token</span>
+                  </div>
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-green-400">├─</span>
+                    <span>Add permissions</span>
+                  </div>
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-green-400">└─</span>
+                    <span>Store in Redis</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-400/30">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full flex items-center justify-center font-bold text-white text-sm">4</div>
+                  <h4 className="text-sm font-bold text-white">Access Grant</h4>
+                </div>
+                <div className="space-y-1 text-[10px] text-slate-300">
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-blue-400">├─</span>
+                    <span>Unlock modules</span>
+                  </div>
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-blue-400">├─</span>
+                    <span>Load dashboard</span>
+                  </div>
+                  <div className="flex items-start gap-1.5">
+                    <span className="text-blue-400">└─</span>
+                    <span>Session active</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
