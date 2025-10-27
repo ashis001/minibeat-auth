@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Shield, Users, Building2, Lock, Key, Activity, Clock, AlertCircle, ChevronRight, Sparkles } from 'lucide-react';
+import FlowingArrow from './FlowingArrow';
 
 interface DocumentationProps {
   onClose: () => void;
@@ -529,27 +530,6 @@ const ArchitectureSection = () => {
 
       {/* Architecture Diagram with Animated Flows */}
       <div className="bg-slate-800/50 rounded-xl p-12 border border-slate-700 overflow-hidden relative">
-        <style>{`
-          @keyframes flowRight {
-            0% { transform: translateX(-100%); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateX(100%); opacity: 0; }
-          }
-          .flow-line { position: relative; overflow: hidden; }
-          .flow-dot {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: radial-gradient(circle, #10b981 0%, #3b82f6 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 15px #10b981, 0 0 30px #3b82f6;
-            animation: glow 1s ease-in-out infinite alternate, flowRight 2.5s linear infinite;
-          }
-          @keyframes glow {
-            from { box-shadow: 0 0 15px #10b981, 0 0 30px #3b82f6; }
-            to { box-shadow: 0 0 20px #10b981, 0 0 40px #3b82f6; }
-          }
-        `}</style>
 
         <div className="grid grid-cols-12 gap-8 relative">
           {/* Left Side - Auth Admin Portal */}
@@ -604,40 +584,49 @@ const ArchitectureSection = () => {
             </div>
           </div>
 
-          {/* Center - Flow Lines */}
-          <div className="col-span-2 flex flex-col items-center justify-center space-y-8 relative py-8">
+          {/* Center - Flow Arrows */}
+          <div className="col-span-2 flex flex-col items-center justify-center space-y-8 relative py-4">
             {/* JWT Token Flow */}
-            <div className="relative w-full mb-2">
-              <div className="flow-line w-full h-1 bg-gradient-to-r from-purple-500 via-brand-green to-blue-500 rounded-full">
-                <div className="flow-dot" style={{ animationDelay: '0s' }} />
-                <div className="flow-dot" style={{ animationDelay: '0.8s' }} />
-                <div className="flow-dot" style={{ animationDelay: '1.6s' }} />
-              </div>
-              <div className="text-center mt-5">
+            <div className="relative w-full">
+              <FlowingArrow 
+                width="100%" 
+                height={50} 
+                arrowColor="#10b981" 
+                particleColor="#10b981" 
+                particleCount={25}
+                bgColor="transparent"
+              />
+              <div className="text-center mt-2">
                 <span className="text-xs font-semibold text-brand-green bg-brand-green/10 px-3 py-1 rounded-full border border-brand-green/30">JWT Token</span>
               </div>
             </div>
 
             {/* License Flow */}
-            <div className="relative w-full mb-2">
-              <div className="flow-line w-full h-1 bg-gradient-to-r from-purple-500 via-yellow-500 to-blue-500 rounded-full">
-                <div className="flow-dot" style={{ animationDelay: '0.4s' }} />
-                <div className="flow-dot" style={{ animationDelay: '1.2s' }} />
-                <div className="flow-dot" style={{ animationDelay: '2s' }} />
-              </div>
-              <div className="text-center mt-5">
+            <div className="relative w-full">
+              <FlowingArrow 
+                width="100%" 
+                height={50} 
+                arrowColor="#fbbf24" 
+                particleColor="#fbbf24" 
+                particleCount={25}
+                bgColor="transparent"
+              />
+              <div className="text-center mt-2">
                 <span className="text-xs font-semibold text-yellow-400 bg-yellow-400/10 px-3 py-1 rounded-full border border-yellow-400/30">License</span>
               </div>
             </div>
 
             {/* Permissions Flow */}
-            <div className="relative w-full mb-2">
-              <div className="flow-line w-full h-1 bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 rounded-full">
-                <div className="flow-dot" style={{ animationDelay: '0.6s' }} />
-                <div className="flow-dot" style={{ animationDelay: '1.4s' }} />
-                <div className="flow-dot" style={{ animationDelay: '2.2s' }} />
-              </div>
-              <div className="text-center mt-5">
+            <div className="relative w-full">
+              <FlowingArrow 
+                width="100%" 
+                height={50} 
+                arrowColor="#06b6d4" 
+                particleColor="#06b6d4" 
+                particleCount={25}
+                bgColor="transparent"
+              />
+              <div className="text-center mt-2">
                 <span className="text-xs font-semibold text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/30">Permissions</span>
               </div>
             </div>
