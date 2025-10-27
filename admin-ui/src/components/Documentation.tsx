@@ -238,48 +238,6 @@ const UserManagementSection = () => (
         </div>
       </div>
 
-      {/* Password & Authentication */}
-      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-purple-500/50">
-        <div className="flex items-start gap-4 mb-4">
-          <Lock className="h-8 w-8 text-purple-400 flex-shrink-0" />
-          <div>
-            <h3 className="text-xl font-bold text-white mb-2">Password & Authentication Management</h3>
-            <p className="text-slate-300 text-sm mb-4">
-              Self-service password management with secure reset workflows, MFA options, and password policy enforcement.
-            </p>
-          </div>
-        </div>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
-            <h4 className="text-sm font-bold text-white mb-2">Password Reset</h4>
-            <div className="space-y-1 text-[10px] text-slate-300">
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Email-based reset link</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Time-limited tokens (1hr)</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Admin-initiated reset</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Security question fallback</span></div>
-            </div>
-          </div>
-          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
-            <h4 className="text-sm font-bold text-white mb-2">Multi-Factor Auth</h4>
-            <div className="space-y-1 text-[10px] text-slate-300">
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>TOTP authenticator apps</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>SMS verification</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Backup codes (10x)</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Trusted device memory</span></div>
-            </div>
-          </div>
-          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
-            <h4 className="text-sm font-bold text-white mb-2">Policy Enforcement</h4>
-            <div className="space-y-1 text-[10px] text-slate-300">
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Complexity requirements</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Password expiry (90 days)</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>History check (5 prev)</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Force change on breach</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Activity & Audit */}
       <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-orange-500/50">
         <div className="flex items-start gap-4 mb-4">
