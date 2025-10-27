@@ -350,7 +350,7 @@ const OrganizationSection = () => (
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
             <h4 className="text-sm font-bold text-white mb-2">Creation & Setup</h4>
             <div className="space-y-1 text-[10px] text-slate-300">
@@ -358,15 +358,6 @@ const OrganizationSection = () => (
               <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Custom domain mapping</span></div>
               <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Branding configuration</span></div>
               <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Initial admin setup</span></div>
-            </div>
-          </div>
-          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
-            <h4 className="text-sm font-bold text-white mb-2">Configuration</h4>
-            <div className="space-y-1 text-[10px] text-slate-300">
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>AWS credentials storage</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Snowflake connections</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Email notification settings</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Timezone preferences</span></div>
             </div>
           </div>
           <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
@@ -430,11 +421,11 @@ const OrganizationSection = () => (
           <div>
             <h3 className="text-xl font-bold text-white mb-2">Resource & Quota Management</h3>
             <p className="text-slate-300 text-sm mb-4">
-              Enforce limits on users, storage, API calls, and concurrent jobs to ensure fair resource allocation.
+              Enforce limits on users, API calls, and concurrent jobs to ensure fair resource allocation.
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-400/30">
             <h4 className="text-sm font-bold text-white mb-2">User Limits</h4>
             <div className="space-y-1 text-[10px] text-slate-300">
@@ -442,15 +433,6 @@ const OrganizationSection = () => (
               <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Concurrent sessions</span></div>
               <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Invitation limits</span></div>
               <div className="flex items-start gap-1.5"><span className="text-cyan-400">└─</span><span>Auto-blocking on exceed</span></div>
-            </div>
-          </div>
-          <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-400/30">
-            <h4 className="text-sm font-bold text-white mb-2">Storage Quotas</h4>
-            <div className="space-y-1 text-[10px] text-slate-300">
-              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Database storage (GB)</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>File upload limits</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Log retention period</span></div>
-              <div className="flex items-start gap-1.5"><span className="text-cyan-400">└─</span><span>Backup storage</span></div>
             </div>
           </div>
           <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-400/30">
