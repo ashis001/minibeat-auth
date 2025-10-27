@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Shield, Users, Building2, Lock, Key, Activity, Database, Clock, AlertCircle, ChevronRight, Sparkles } from 'lucide-react';
+import { X, Shield, Users, Building2, Lock, Key, Activity, Clock, AlertCircle, ChevronRight, Sparkles } from 'lucide-react';
 
 interface DocumentationProps {
   onClose: () => void;
