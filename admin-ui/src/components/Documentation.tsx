@@ -259,33 +259,33 @@ const RBACSection = () => (
     <div className="grid grid-cols-1 gap-6">
       {[
         {
-          role: 'Admin',
+          role: 'Developer',
           color: 'from-red-500 to-pink-600',
           permissions: [
-            'Manage all users and organizations',
-            'Configure licenses and features',
-            'Access system monitoring',
-            'View audit logs and activity',
+            'Full access to all MiniBeast modules',
+            'Configure AWS and Snowflake connections',
+            'Deploy Validator, Migrator, Reconciliator',
+            'Manage configurations and settings',
           ],
         },
         {
-          role: 'Manager',
+          role: 'Ops',
           color: 'from-blue-500 to-cyan-600',
           permissions: [
-            'Manage users in their organization',
-            'Deploy and configure modules',
-            'View organization dashboards',
-            'Limited administrative capabilities',
+            'Execute validation and migration jobs',
+            'View dashboards and reports',
+            'Monitor module status',
+            'Limited configuration access',
           ],
         },
         {
-          role: 'Viewer',
+          role: 'Tester',
           color: 'from-green-500 to-emerald-600',
           permissions: [
-            'View dashboards and metrics',
-            'Access validation reports',
+            'View validation results',
+            'Access test reports',
+            'Read-only dashboard access',
             'No modification permissions',
-            'Read-only access',
           ],
         },
       ].map((item, i) => (
@@ -463,10 +463,10 @@ const LicensesSection = () => (
             {license.features.map((feature, j) => (
               <li
                 key={j}
-                className="flex items-start gap-2 text-white/90 text-sm animate-in slide-in-from-left"
+                className="flex items-center justify-center gap-2 text-white/90 text-sm animate-in slide-in-from-left"
                 style={{ animationDelay: `${(i * 200) + (j * 100)}ms` }}
               >
-                <span className="text-white mt-0.5 font-bold">✓</span>
+                <span className="text-white font-bold">✓</span>
                 <span>{feature}</span>
               </li>
             ))}
@@ -538,16 +538,16 @@ const ArchitectureSection = () => {
           .flow-line { position: relative; overflow: hidden; }
           .flow-dot {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 12px;
+            height: 12px;
             background: radial-gradient(circle, #10b981 0%, #3b82f6 100%);
             border-radius: 50%;
-            box-shadow: 0 0 25px #10b981, 0 0 50px #3b82f6;
+            box-shadow: 0 0 15px #10b981, 0 0 30px #3b82f6;
             animation: glow 1s ease-in-out infinite alternate, flowRight 2.5s linear infinite;
           }
           @keyframes glow {
-            from { box-shadow: 0 0 25px #10b981, 0 0 50px #3b82f6; }
-            to { box-shadow: 0 0 35px #10b981, 0 0 70px #3b82f6, 0 0 90px #10b981; }
+            from { box-shadow: 0 0 15px #10b981, 0 0 30px #3b82f6; }
+            to { box-shadow: 0 0 20px #10b981, 0 0 40px #3b82f6; }
           }
         `}</style>
 
@@ -605,40 +605,40 @@ const ArchitectureSection = () => {
           </div>
 
           {/* Center - Flow Lines */}
-          <div className="col-span-2 flex flex-col items-center justify-center space-y-12 relative py-8">
+          <div className="col-span-2 flex flex-col items-center justify-center space-y-16 relative py-8">
             {/* JWT Token Flow */}
-            <div className="relative w-full">
-              <div className="flow-line w-full h-3 bg-gradient-to-r from-purple-500 via-brand-green to-blue-500 rounded-full shadow-lg shadow-brand-green/50">
+            <div className="relative w-full mb-2">
+              <div className="flow-line w-full h-1 bg-gradient-to-r from-purple-500 via-brand-green to-blue-500 rounded-full">
                 <div className="flow-dot" style={{ animationDelay: '0s' }} />
                 <div className="flow-dot" style={{ animationDelay: '0.8s' }} />
                 <div className="flow-dot" style={{ animationDelay: '1.6s' }} />
               </div>
-              <div className="text-center mt-4">
-                <span className="text-sm font-bold text-brand-green bg-brand-green/20 px-5 py-2 rounded-full border-2 border-brand-green/50 shadow-lg shadow-brand-green/30">JWT Token</span>
+              <div className="text-center mt-5">
+                <span className="text-xs font-semibold text-brand-green bg-brand-green/10 px-3 py-1 rounded-full border border-brand-green/30">JWT Token</span>
               </div>
             </div>
 
             {/* License Flow */}
-            <div className="relative w-full">
-              <div className="flow-line w-full h-3 bg-gradient-to-r from-purple-500 via-yellow-500 to-blue-500 rounded-full shadow-lg shadow-yellow-500/50">
+            <div className="relative w-full mb-2">
+              <div className="flow-line w-full h-1 bg-gradient-to-r from-purple-500 via-yellow-500 to-blue-500 rounded-full">
                 <div className="flow-dot" style={{ animationDelay: '0.4s' }} />
                 <div className="flow-dot" style={{ animationDelay: '1.2s' }} />
                 <div className="flow-dot" style={{ animationDelay: '2s' }} />
               </div>
-              <div className="text-center mt-4">
-                <span className="text-sm font-bold text-yellow-400 bg-yellow-400/20 px-5 py-2 rounded-full border-2 border-yellow-400/50 shadow-lg shadow-yellow-400/30">License</span>
+              <div className="text-center mt-5">
+                <span className="text-xs font-semibold text-yellow-400 bg-yellow-400/10 px-3 py-1 rounded-full border border-yellow-400/30">License</span>
               </div>
             </div>
 
             {/* Permissions Flow */}
-            <div className="relative w-full">
-              <div className="flow-line w-full h-3 bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 rounded-full shadow-lg shadow-cyan-500/50">
+            <div className="relative w-full mb-2">
+              <div className="flow-line w-full h-1 bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 rounded-full">
                 <div className="flow-dot" style={{ animationDelay: '0.6s' }} />
                 <div className="flow-dot" style={{ animationDelay: '1.4s' }} />
                 <div className="flow-dot" style={{ animationDelay: '2.2s' }} />
               </div>
-              <div className="text-center mt-4">
-                <span className="text-sm font-bold text-cyan-400 bg-cyan-400/20 px-5 py-2 rounded-full border-2 border-cyan-400/50 shadow-lg shadow-cyan-400/30">Permissions</span>
+              <div className="text-center mt-5">
+                <span className="text-xs font-semibold text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/30">Permissions</span>
               </div>
             </div>
           </div>
