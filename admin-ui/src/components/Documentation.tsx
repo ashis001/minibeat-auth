@@ -545,13 +545,18 @@ const ArchitectureSection = () => {
           .flow-line { position: relative; overflow: hidden; }
           .flow-dot {
             position: absolute;
-            width: 8px;
-            height: 8px;
-            background: linear-gradient(135deg, #10b981, #3b82f6);
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle, #10b981 0%, #3b82f6 100%);
             border-radius: 50%;
-            box-shadow: 0 0 10px #10b981;
+            box-shadow: 0 0 20px #10b981, 0 0 40px #3b82f6;
+            animation: glow 1s ease-in-out infinite alternate;
           }
-          .flow-right .flow-dot { animation: flowRight 3s ease-in-out infinite; }
+          @keyframes glow {
+            from { box-shadow: 0 0 20px #10b981, 0 0 40px #3b82f6; }
+            to { box-shadow: 0 0 30px #10b981, 0 0 60px #3b82f6, 0 0 80px #10b981; }
+          }
+          .flow-right .flow-dot { animation: flowRight 2.5s linear infinite; }
           .flow-down .flow-dot { animation: flowDown 3s ease-in-out infinite; }
           .flow-up .flow-dot { animation: flowUp 3s ease-in-out infinite; }
         `}</style>
@@ -613,35 +618,37 @@ const ArchitectureSection = () => {
           <div className="col-span-2 flex flex-col items-center justify-center space-y-8 relative">
             {/* JWT Token Flow */}
             <div className="relative w-full">
-              <div className="flow-line flow-right w-full h-1 bg-gradient-to-r from-purple-500 via-brand-green to-blue-500 rounded-full">
+              <div className="flow-line flow-right w-full h-2 bg-gradient-to-r from-purple-500 via-brand-green to-blue-500 rounded-full shadow-lg shadow-brand-green/50">
                 <div className="flow-dot" style={{ animationDelay: '0s' }} />
-                <div className="flow-dot" style={{ animationDelay: '1s' }} />
-                <div className="flow-dot" style={{ animationDelay: '2s' }} />
+                <div className="flow-dot" style={{ animationDelay: '0.8s' }} />
+                <div className="flow-dot" style={{ animationDelay: '1.6s' }} />
               </div>
-              <div className="text-center mt-2">
-                <span className="text-xs font-bold text-brand-green bg-brand-green/10 px-3 py-1 rounded-full border border-brand-green/30">JWT Token</span>
+              <div className="text-center mt-3">
+                <span className="text-sm font-bold text-brand-green bg-brand-green/20 px-4 py-1.5 rounded-full border-2 border-brand-green/50 shadow-lg shadow-brand-green/30">JWT Token</span>
               </div>
             </div>
 
             {/* License Flow */}
             <div className="relative w-full">
-              <div className="flow-line flow-right w-full h-1 bg-gradient-to-r from-purple-500 via-yellow-500 to-blue-500 rounded-full">
-                <div className="flow-dot" style={{ animationDelay: '0.5s' }} />
-                <div className="flow-dot" style={{ animationDelay: '1.5s' }} />
+              <div className="flow-line flow-right w-full h-2 bg-gradient-to-r from-purple-500 via-yellow-500 to-blue-500 rounded-full shadow-lg shadow-yellow-500/50">
+                <div className="flow-dot" style={{ animationDelay: '0.4s' }} />
+                <div className="flow-dot" style={{ animationDelay: '1.2s' }} />
+                <div className="flow-dot" style={{ animationDelay: '2s' }} />
               </div>
-              <div className="text-center mt-2">
-                <span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-3 py-1 rounded-full border border-yellow-400/30">License</span>
+              <div className="text-center mt-3">
+                <span className="text-sm font-bold text-yellow-400 bg-yellow-400/20 px-4 py-1.5 rounded-full border-2 border-yellow-400/50 shadow-lg shadow-yellow-400/30">License</span>
               </div>
             </div>
 
             {/* Permissions Flow */}
             <div className="relative w-full">
-              <div className="flow-line flow-right w-full h-1 bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 rounded-full">
-                <div className="flow-dot" style={{ animationDelay: '1s' }} />
-                <div className="flow-dot" style={{ animationDelay: '2s' }} />
+              <div className="flow-line flow-right w-full h-2 bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 rounded-full shadow-lg shadow-cyan-500/50">
+                <div className="flow-dot" style={{ animationDelay: '0.6s' }} />
+                <div className="flow-dot" style={{ animationDelay: '1.4s' }} />
+                <div className="flow-dot" style={{ animationDelay: '2.2s' }} />
               </div>
-              <div className="text-center mt-2">
-                <span className="text-xs font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/30">Permissions</span>
+              <div className="text-center mt-3">
+                <span className="text-sm font-bold text-cyan-400 bg-cyan-400/20 px-4 py-1.5 rounded-full border-2 border-cyan-400/50 shadow-lg shadow-cyan-400/30">Permissions</span>
               </div>
             </div>
           </div>
@@ -679,23 +686,6 @@ const ArchitectureSection = () => {
               </div>
             </div>
 
-            {/* Integration Layer */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-slate-900/50 rounded-lg p-4 border border-orange-500/30 animate-in slide-in-from-right" style={{ animationDelay: '400ms' }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <Activity className="h-5 w-5 text-orange-400" />
-                  <h4 className="text-sm font-bold text-white">AWS Lambda</h4>
-                </div>
-                <p className="text-xs text-slate-400">Go Backend</p>
-              </div>
-              <div className="bg-slate-900/50 rounded-lg p-4 border border-cyan-500/30 animate-in slide-in-from-right" style={{ animationDelay: '500ms' }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <Activity className="h-5 w-5 text-cyan-400" />
-                  <h4 className="text-sm font-bold text-white">Snowflake</h4>
-                </div>
-                <p className="text-xs text-slate-400">Data Warehouse</p>
-              </div>
-            </div>
           </div>
         </div>
 
