@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { X, Shield, Users, Building2, Lock, Key, Activity, Clock, AlertCircle, ChevronRight, Sparkles } from 'lucide-react';
-import FlowingArrow from './FlowingArrow';
 
 interface DocumentationProps {
   onClose: () => void;
@@ -531,140 +530,190 @@ const ArchitectureSection = () => {
       {/* Architecture Diagram with Animated Flows */}
       <div className="bg-slate-800/50 rounded-xl p-12 border border-slate-700 overflow-hidden relative">
 
-        <div className="grid grid-cols-12 gap-8 relative">
-          {/* Left Side - Auth Admin Portal */}
-          <div className="col-span-5 space-y-6">
-            {/* Admin Portal */}
-            <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-8 border-2 border-purple-500/50 animate-in zoom-in shadow-xl shadow-purple-500/20">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center animate-pulse">
-                  <Shield className="h-7 w-7 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">Auth Admin Portal</h3>
-                  <p className="text-purple-300 text-xs">Authentication Server</p>
-                </div>
+        <div className="grid grid-cols-12 gap-6 relative">
+          {/* Left Side - Auth System Components */}
+          <div className="col-span-5">
+            <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-purple-500/50 h-full">
+              <div className="border-b border-purple-500/30 pb-3 mb-4">
+                <h3 className="text-lg font-bold text-white text-center">Auth System Components</h3>
               </div>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-slate-300">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span>User Management</span>
+              
+              {/* Backend & Admin UI */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="bg-slate-800/50 rounded-lg p-3 border border-purple-400/30">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Shield className="h-4 w-4 text-purple-400" />
+                    <div>
+                      <h4 className="text-xs font-bold text-white">Backend (FastAPI)</h4>
+                      <p className="text-[10px] text-purple-300">Port: 8000</p>
+                    </div>
+                  </div>
+                  <div className="space-y-1 text-[10px] text-slate-300">
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-purple-400">├─</span>
+                      <span>OAuth2 + JWT</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-purple-400">├─</span>
+                      <span>RBAC</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-purple-400">├─</span>
+                      <span>License Mgmt</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-purple-400">└─</span>
+                      <span>IP Whitelist</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-slate-300">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span>Organization Control</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-300">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span>License Management</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-300">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span>RBAC Engine</span>
-                </div>
-              </div>
-            </div>
 
-            {/* Database Layer */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-slate-900/50 rounded-lg p-5 border border-blue-500/30 animate-in slide-in-from-left" style={{ animationDelay: '200ms' }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <Activity className="h-5 w-5 text-blue-400" />
-                  <h4 className="text-sm font-bold text-white">PostgreSQL</h4>
+                <div className="bg-slate-800/50 rounded-lg p-3 border border-pink-400/30">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Users className="h-4 w-4 text-pink-400" />
+                    <div>
+                      <h4 className="text-xs font-bold text-white">Admin UI (React)</h4>
+                      <p className="text-[10px] text-pink-300">Port: 5173</p>
+                    </div>
+                  </div>
+                  <div className="space-y-1 text-[10px] text-slate-300">
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-pink-400">├─</span>
+                      <span>User Mgmt</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-pink-400">├─</span>
+                      <span>Org Settings</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-pink-400">└─</span>
+                      <span>License Dash</span>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-xs text-slate-400">User Data & Orgs</p>
               </div>
-              <div className="bg-slate-900/50 rounded-lg p-5 border border-red-500/30 animate-in slide-in-from-left" style={{ animationDelay: '300ms' }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <Clock className="h-5 w-5 text-red-400" />
-                  <h4 className="text-sm font-bold text-white">Redis</h4>
+
+              {/* Database Layer */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-slate-800/50 rounded-lg p-3 border border-blue-400/30">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Activity className="h-4 w-4 text-blue-400" />
+                    <div>
+                      <h4 className="text-xs font-bold text-white">PostgreSQL</h4>
+                      <p className="text-[10px] text-blue-300">Port: 5432</p>
+                    </div>
+                  </div>
+                  <div className="space-y-1 text-[10px] text-slate-300">
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-blue-400">├─</span>
+                      <span>Users</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-blue-400">└─</span>
+                      <span>Organizations</span>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-xs text-slate-400">Session Cache</p>
+
+                <div className="bg-slate-800/50 rounded-lg p-3 border border-red-400/30">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Clock className="h-4 w-4 text-red-400" />
+                    <div>
+                      <h4 className="text-xs font-bold text-white">Redis</h4>
+                      <p className="text-[10px] text-red-300">Port: 6379</p>
+                    </div>
+                  </div>
+                  <div className="space-y-1 text-[10px] text-slate-300">
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-red-400">├─</span>
+                      <span>Sessions</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-red-400">└─</span>
+                      <span>Token Cache</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Center - Flow Arrows */}
-          <div className="col-span-2 flex flex-col items-center justify-center space-y-8 relative py-4">
-            {/* JWT Token Flow */}
-            <div className="relative w-full">
-              <FlowingArrow 
-                width="100%" 
-                height={50} 
-                arrowColor="#10b981" 
-                particleColor="#10b981" 
-                particleCount={25}
-                bgColor="transparent"
-              />
-              <div className="text-center mt-2">
-                <span className="text-xs font-semibold text-brand-green bg-brand-green/10 px-3 py-1 rounded-full border border-brand-green/30">JWT Token</span>
-              </div>
+          {/* Center - Simple Arrows */}
+          <div className="col-span-2 flex flex-col items-center justify-center space-y-10 relative">
+            {/* JWT Token Arrow */}
+            <div className="flex flex-col items-center">
+              <svg width="100%" height="30" viewBox="0 0 100 30" preserveAspectRatio="none">
+                <defs>
+                  <marker id="arrowhead-green" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                    <polygon points="0 0, 8 3, 0 6" fill="#10b981" />
+                  </marker>
+                </defs>
+                <line x1="5" y1="15" x2="95" y2="15" stroke="#10b981" strokeWidth="2" markerEnd="url(#arrowhead-green)" />
+              </svg>
+              <span className="text-[10px] font-semibold text-brand-green mt-1">JWT Token</span>
             </div>
 
-            {/* License Flow */}
-            <div className="relative w-full">
-              <FlowingArrow 
-                width="100%" 
-                height={50} 
-                arrowColor="#fbbf24" 
-                particleColor="#fbbf24" 
-                particleCount={25}
-                bgColor="transparent"
-              />
-              <div className="text-center mt-2">
-                <span className="text-xs font-semibold text-yellow-400 bg-yellow-400/10 px-3 py-1 rounded-full border border-yellow-400/30">License</span>
-              </div>
+            {/* License Arrow */}
+            <div className="flex flex-col items-center">
+              <svg width="100%" height="30" viewBox="0 0 100 30" preserveAspectRatio="none">
+                <defs>
+                  <marker id="arrowhead-yellow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                    <polygon points="0 0, 8 3, 0 6" fill="#fbbf24" />
+                  </marker>
+                </defs>
+                <line x1="5" y1="15" x2="95" y2="15" stroke="#fbbf24" strokeWidth="2" markerEnd="url(#arrowhead-yellow)" />
+              </svg>
+              <span className="text-[10px] font-semibold text-yellow-400 mt-1">License</span>
             </div>
 
-            {/* Permissions Flow */}
-            <div className="relative w-full">
-              <FlowingArrow 
-                width="100%" 
-                height={50} 
-                arrowColor="#06b6d4" 
-                particleColor="#06b6d4" 
-                particleCount={25}
-                bgColor="transparent"
-              />
-              <div className="text-center mt-2">
-                <span className="text-xs font-semibold text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/30">Permissions</span>
-              </div>
+            {/* Permissions Arrow */}
+            <div className="flex flex-col items-center">
+              <svg width="100%" height="30" viewBox="0 0 100 30" preserveAspectRatio="none">
+                <defs>
+                  <marker id="arrowhead-cyan" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                    <polygon points="0 0, 8 3, 0 6" fill="#06b6d4" />
+                  </marker>
+                </defs>
+                <line x1="5" y1="15" x2="95" y2="15" stroke="#06b6d4" strokeWidth="2" markerEnd="url(#arrowhead-cyan)" />
+              </svg>
+              <span className="text-[10px] font-semibold text-cyan-400 mt-1">Permissions</span>
             </div>
           </div>
 
           {/* Right Side - MiniBeast Platform */}
-          <div className="col-span-5 space-y-6">
-            {/* MiniBeast Platform */}
-            <div className="bg-gradient-to-br from-brand-green/20 to-blue-500/20 rounded-xl p-8 border-2 border-brand-green/50 animate-in zoom-in shadow-xl shadow-brand-green/20" style={{ animationDelay: '200ms' }}>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-brand-green to-blue-600 rounded-xl flex items-center justify-center animate-pulse">
-                  <Sparkles className="h-7 w-7 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white">MiniBeast Platform</h3>
-                  <p className="text-brand-green text-xs">Data Operations Platform</p>
-                </div>
+          <div className="col-span-5">
+            <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-brand-green/50 h-full">
+              <div className="border-b border-brand-green/30 pb-3 mb-4">
+                <h3 className="text-lg font-bold text-white text-center">MiniBeast Platform</h3>
               </div>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-slate-300">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span>Validator Module</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-300">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span>Migrator Module</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-300">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span>Reconciliator Module</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-300">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span>Dashboard & Analytics</span>
+              
+              <div className="space-y-3">
+                <div className="bg-slate-800/50 rounded-lg p-3 border border-green-400/30">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Sparkles className="h-4 w-4 text-green-400" />
+                    <h4 className="text-xs font-bold text-white">Data Operations</h4>
+                  </div>
+                  <div className="space-y-1 text-[10px] text-slate-300">
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-green-400">├─</span>
+                      <span>Validator Module</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-green-400">├─</span>
+                      <span>Migrator Module</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-green-400">├─</span>
+                      <span>Reconciliator Module</span>
+                    </div>
+                    <div className="flex items-start gap-1.5">
+                      <span className="text-green-400">└─</span>
+                      <span>Dashboard & Analytics</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
