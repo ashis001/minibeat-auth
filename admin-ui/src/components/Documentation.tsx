@@ -146,53 +146,181 @@ const UserManagementSection = () => (
     <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-6 border border-blue-500/30">
       <h2 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
         <Users className="h-8 w-8 text-blue-400 animate-bounce" />
-        User Management
+        Enterprise User Management
       </h2>
       <p className="text-slate-300 text-lg">
-        Complete control over user lifecycle with role assignments and permissions.
+        Complete user lifecycle management with granular permissions, self-service capabilities, and comprehensive audit trails.
       </p>
     </div>
 
-    <div className="grid grid-cols-2 gap-6">
-      {[
-        {
-          title: 'Create & Update',
-          desc: 'Add new users and modify existing user details',
-          icon: Users,
-          color: 'text-green-400',
-        },
-        {
-          title: 'Role Assignment',
-          desc: 'Assign Admin, Manager, or Viewer roles',
-          icon: Shield,
-          color: 'text-blue-400',
-        },
-        {
-          title: 'Password Management',
-          desc: 'Secure password reset and recovery',
-          icon: Lock,
-          color: 'text-purple-400',
-        },
-        {
-          title: 'Activity Tracking',
-          desc: 'Monitor user actions and audit logs',
-          icon: Activity,
-          color: 'text-orange-400',
-        },
-      ].map((item, i) => {
-        const Icon = item.icon;
-        return (
-          <div
-            key={i}
-            className="bg-slate-800/50 p-6 rounded-xl border border-slate-700 transform transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-brand-green/10 animate-in zoom-in"
-            style={{ animationDelay: `${i * 150}ms` }}
-          >
-            <Icon className={`h-12 w-12 ${item.color} mb-4 animate-pulse`} />
-            <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
-            <p className="text-slate-400 text-sm">{item.desc}</p>
+    <div className="grid grid-cols-1 gap-6">
+      {/* User Lifecycle */}
+      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-blue-500/50">
+        <div className="flex items-start gap-4 mb-4">
+          <Users className="h-8 w-8 text-blue-400 flex-shrink-0" />
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2">User Lifecycle Management</h3>
+            <p className="text-slate-300 text-sm mb-4">
+              End-to-end user provisioning with invitation workflows, email verification, and automated onboarding processes.
+            </p>
           </div>
-        );
-      })}
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">User Creation</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Email invitation system</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Email verification required</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Initial password setup</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">└─</span><span>Welcome onboarding flow</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Profile Management</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Personal info updates</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Avatar/photo upload</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Notification preferences</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">└─</span><span>2FA configuration</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-blue-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Status Control</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Active/Suspended states</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Soft delete (archive)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">├─</span><span>Re-activation workflow</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-blue-400">└─</span><span>Permanent deletion</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Role & Permission Management */}
+      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-cyan-500/50">
+        <div className="flex items-start gap-4 mb-4">
+          <Shield className="h-8 w-8 text-cyan-400 flex-shrink-0" />
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2">Role & Permission Assignment</h3>
+            <p className="text-slate-300 text-sm mb-4">
+              Dynamic role assignment with inheritance, permission overrides, and real-time enforcement across all modules.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Role Assignment</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Developer (full access)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Ops (execute & monitor)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Tester (read-only)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">└─</span><span>Custom role creation</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Permission Control</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Module-level access</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Feature gate control</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>CRUD permissions</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">└─</span><span>API endpoint access</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Enforcement</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Real-time validation</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>30-sec role check</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Auto-logout on change</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">└─</span><span>Session invalidation</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Password & Authentication */}
+      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-purple-500/50">
+        <div className="flex items-start gap-4 mb-4">
+          <Lock className="h-8 w-8 text-purple-400 flex-shrink-0" />
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2">Password & Authentication Management</h3>
+            <p className="text-slate-300 text-sm mb-4">
+              Self-service password management with secure reset workflows, MFA options, and password policy enforcement.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Password Reset</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Email-based reset link</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Time-limited tokens (1hr)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Admin-initiated reset</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Security question fallback</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Multi-Factor Auth</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>TOTP authenticator apps</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>SMS verification</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Backup codes (10x)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Trusted device memory</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Policy Enforcement</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Complexity requirements</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Password expiry (90 days)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>History check (5 prev)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Force change on breach</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Activity & Audit */}
+      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-orange-500/50">
+        <div className="flex items-start gap-4 mb-4">
+          <Activity className="h-8 w-8 text-orange-400 flex-shrink-0" />
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2">Activity Tracking & Audit Logs</h3>
+            <p className="text-slate-300 text-sm mb-4">
+              Comprehensive audit trail with real-time monitoring, anomaly detection, and compliance-ready reporting.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-orange-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Activity Logging</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>Login/logout events</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>Permission changes</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>Module access tracking</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">└─</span><span>API call logging</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-orange-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Monitoring</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>Failed login attempts</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>Suspicious activity alerts</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>Concurrent session detection</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">└─</span><span>Geo-location tracking</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-orange-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Compliance</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>90-day retention</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>Exportable audit reports</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">├─</span><span>GDPR compliance logs</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-orange-400">└─</span><span>SOC2 audit trails</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 );
@@ -203,41 +331,138 @@ const OrganizationSection = () => (
     <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-purple-500/30">
       <h2 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
         <Building2 className="h-8 w-8 text-purple-400 animate-pulse" />
-        Organization Management
+        Enterprise Organization Management
       </h2>
       <p className="text-slate-300 text-lg">
-        Multi-tenant organization control with granular feature management.
+        Multi-tenant architecture with isolated data, custom branding, and hierarchical permission inheritance.
       </p>
     </div>
 
-    <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 animate-in fade-in duration-700">
-      <h3 className="text-xl font-bold text-white mb-6">Organization Controls</h3>
-      <div className="space-y-4">
-        {[
-          { label: 'Create Organizations', desc: 'Set up new organizations with custom settings', progress: 100 },
-          { label: 'License Configuration', desc: 'Trial, Professional, or Enterprise licenses', progress: 85 },
-          { label: 'Feature Control', desc: 'Enable/disable Validator, Migrator, Reconciliator', progress: 90 },
-          { label: 'User Limits', desc: 'Enforce maximum user count per organization', progress: 75 },
-          { label: 'Organization Status', desc: 'Pause or resume organization access', progress: 95 },
-        ].map((item, i) => (
-          <div
-            key={i}
-            className="transform transition-all duration-300 hover:translate-x-2 animate-in slide-in-from-left"
-            style={{ animationDelay: `${i * 100}ms` }}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-white font-medium">{item.label}</span>
-              <span className="text-brand-green text-sm">{item.progress}%</span>
-            </div>
-            <p className="text-slate-400 text-sm mb-2">{item.desc}</p>
-            <div className="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-brand-green to-blue-500 rounded-full transition-all duration-1000 animate-in"
-                style={{ width: `${item.progress}%`, animationDelay: `${i * 100}ms` }}
-              />
+    <div className="grid grid-cols-1 gap-6">
+      {/* Organization Lifecycle */}
+      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-purple-500/50">
+        <div className="flex items-start gap-4 mb-4">
+          <Building2 className="h-8 w-8 text-purple-400 flex-shrink-0" />
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2">Organization Lifecycle Management</h3>
+            <p className="text-slate-300 text-sm mb-4">
+              Complete tenant isolation with dedicated resources, custom configurations, and independent data stores.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Creation & Setup</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Organization registration</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Custom domain mapping</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Branding configuration</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Initial admin setup</span></div>
             </div>
           </div>
-        ))}
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Configuration</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>AWS credentials storage</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Snowflake connections</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Email notification settings</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Timezone preferences</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-purple-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Status Control</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Active/Paused states</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Suspension on non-payment</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">├─</span><span>Grace period handling</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-purple-400">└─</span><span>Data archival options</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* License Management */}
+      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-pink-500/50">
+        <div className="flex items-start gap-4 mb-4">
+          <Key className="h-8 w-8 text-pink-400 flex-shrink-0" />
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2">License & Feature Management</h3>
+            <p className="text-slate-300 text-sm mb-4">
+              Flexible licensing tiers with real-time enforcement, automatic expiry handling, and upgrade/downgrade workflows.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-pink-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">License Tiers</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">├─</span><span>Trial (14 days, 5 users)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">├─</span><span>Professional (20 users)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">├─</span><span>Enterprise (unlimited)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">└─</span><span>Custom enterprise plans</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-pink-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Module Control</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">├─</span><span>Validator access</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">├─</span><span>Migrator access</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">├─</span><span>Reconciliator access</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">└─</span><span>Dashboard analytics</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-pink-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Enforcement</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">├─</span><span>Real-time validation</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">├─</span><span>Auto-block on expiry</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">├─</span><span>Feature gate checking</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-pink-400">└─</span><span>Usage metrics tracking</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Resource Management */}
+      <div className="bg-slate-900/70 rounded-xl p-6 border-2 border-cyan-500/50">
+        <div className="flex items-start gap-4 mb-4">
+          <Activity className="h-8 w-8 text-cyan-400 flex-shrink-0" />
+          <div>
+            <h3 className="text-xl font-bold text-white mb-2">Resource & Quota Management</h3>
+            <p className="text-slate-300 text-sm mb-4">
+              Enforce limits on users, storage, API calls, and concurrent jobs to ensure fair resource allocation.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">User Limits</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Max users per org</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Concurrent sessions</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Invitation limits</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">└─</span><span>Auto-blocking on exceed</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">Storage Quotas</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Database storage (GB)</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>File upload limits</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Log retention period</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">└─</span><span>Backup storage</span></div>
+            </div>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-4 border border-cyan-400/30">
+            <h4 className="text-sm font-bold text-white mb-2">API & Jobs</h4>
+            <div className="space-y-1 text-[10px] text-slate-300">
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>API rate limits</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Concurrent job limit</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">├─</span><span>Validation run quota</span></div>
+              <div className="flex items-start gap-1.5"><span className="text-cyan-400">└─</span><span>Migration job limit</span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
