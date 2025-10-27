@@ -5,18 +5,18 @@ interface DocumentationProps {
   onClose: () => void;
 }
 
-type Section = 'overview' | 'user-mgmt' | 'org-mgmt' | 'rbac' | 'security' | 'licenses';
+type Section = 'overview' | 'org-mgmt' | 'rbac' | 'security' | 'licenses' | 'architecture';
 
 export const Documentation: React.FC<DocumentationProps> = ({ onClose }) => {
   const [activeSection, setActiveSection] = useState<Section>('overview');
 
   const menuItems = [
     { id: 'overview' as Section, label: 'Overview', icon: Sparkles },
-    { id: 'user-mgmt' as Section, label: 'User Management', icon: Users },
-    { id: 'org-mgmt' as Section, label: 'Organizations', icon: Building2 },
+    { id: 'org-mgmt' as Section, label: 'Organizations & Users', icon: Building2 },
     { id: 'rbac' as Section, label: 'RBAC', icon: Shield },
     { id: 'security' as Section, label: 'Security', icon: Lock },
     { id: 'licenses' as Section, label: 'Licenses', icon: Key },
+    { id: 'architecture' as Section, label: 'Architecture', icon: Activity },
   ];
 
   return (
@@ -71,11 +71,11 @@ export const Documentation: React.FC<DocumentationProps> = ({ onClose }) => {
           {/* Right Content Panel */}
           <main className="flex-1 overflow-y-auto p-8">
             {activeSection === 'overview' && <OverviewSection />}
-            {activeSection === 'user-mgmt' && <UserManagementSection />}
             {activeSection === 'org-mgmt' && <OrganizationSection />}
             {activeSection === 'rbac' && <RBACSection />}
             {activeSection === 'security' && <SecuritySection />}
             {activeSection === 'licenses' && <LicensesSection />}
+            {activeSection === 'architecture' && <ArchitectureSection />}
           </main>
         </div>
       </div>
@@ -138,78 +138,77 @@ const OverviewSection = () => (
   </div>
 );
 
-// User Management Section
-const UserManagementSection = () => (
-  <div className="space-y-6 animate-in slide-in-from-right duration-500">
-    <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-6 border border-blue-500/30">
-      <h2 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
-        <Users className="h-8 w-8 text-blue-400 animate-bounce" />
-        User Management
-      </h2>
-      <p className="text-slate-300 text-lg">
-        Complete control over user lifecycle with role assignments and permissions.
-      </p>
-    </div>
-
-    <div className="grid grid-cols-2 gap-6">
-      {[
-        {
-          title: 'Create & Update',
-          desc: 'Add new users and modify existing user details',
-          icon: Users,
-          color: 'text-green-400',
-        },
-        {
-          title: 'Role Assignment',
-          desc: 'Assign Admin, Manager, or Viewer roles',
-          icon: Shield,
-          color: 'text-blue-400',
-        },
-        {
-          title: 'Password Management',
-          desc: 'Secure password reset and recovery',
-          icon: Lock,
-          color: 'text-purple-400',
-        },
-        {
-          title: 'Activity Tracking',
-          desc: 'Monitor user actions and audit logs',
-          icon: Activity,
-          color: 'text-orange-400',
-        },
-      ].map((item, i) => {
-        const Icon = item.icon;
-        return (
-          <div
-            key={i}
-            className="bg-slate-800/50 p-6 rounded-xl border border-slate-700 transform transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-brand-green/10 animate-in zoom-in"
-            style={{ animationDelay: `${i * 150}ms` }}
-          >
-            <Icon className={`h-12 w-12 ${item.color} mb-4 animate-pulse`} />
-            <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
-            <p className="text-slate-400 text-sm">{item.desc}</p>
-          </div>
-        );
-      })}
-    </div>
-  </div>
-);
-
-// Organization Section
+// Organization & User Management Section
 const OrganizationSection = () => (
   <div className="space-y-6 animate-in slide-in-from-right duration-500">
     <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-purple-500/30">
       <h2 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
         <Building2 className="h-8 w-8 text-purple-400 animate-pulse" />
-        Organization Management
+        Organizations & User Management
       </h2>
       <p className="text-slate-300 text-lg">
-        Multi-tenant organization control with granular feature management.
+        Multi-tenant organization control with comprehensive user lifecycle management.
       </p>
     </div>
 
+    {/* User Management */}
     <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 animate-in fade-in duration-700">
-      <h3 className="text-xl font-bold text-white mb-6">Organization Controls</h3>
+      <div className="flex items-center gap-3 mb-6">
+        <Users className="h-7 w-7 text-blue-400 animate-bounce" />
+        <h3 className="text-2xl font-bold text-white">User Management</h3>
+      </div>
+      <p className="text-slate-300 mb-6">
+        Complete control over user lifecycle with role assignments and permissions.
+      </p>
+      <div className="grid grid-cols-2 gap-6">
+        {[
+          {
+            title: 'Create & Update',
+            desc: 'Add new users and modify existing user details',
+            icon: Users,
+            color: 'text-green-400',
+          },
+          {
+            title: 'Role Assignment',
+            desc: 'Assign Admin, Manager, or Viewer roles',
+            icon: Shield,
+            color: 'text-blue-400',
+          },
+          {
+            title: 'Password Management',
+            desc: 'Secure password reset and recovery',
+            icon: Lock,
+            color: 'text-purple-400',
+          },
+          {
+            title: 'Activity Tracking',
+            desc: 'Monitor user actions and audit logs',
+            icon: Activity,
+            color: 'text-orange-400',
+          },
+        ].map((item, i) => {
+          const Icon = item.icon;
+          return (
+            <div
+              key={i}
+              className="bg-slate-900/50 p-5 rounded-xl border border-slate-700 transform transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-brand-green/10 animate-in zoom-in"
+              style={{ animationDelay: `${i * 150}ms` }}
+            >
+              <Icon className={`h-10 w-10 ${item.color} mb-3 animate-pulse`} />
+              <h4 className="text-lg font-bold text-white mb-2">{item.title}</h4>
+              <p className="text-slate-400 text-sm">{item.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    {/* Organization Controls */}
+    <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 animate-in fade-in duration-700 delay-300">
+      <div className="flex items-center gap-3 mb-6">
+        <Building2 className="h-7 w-7 text-purple-400 animate-pulse" />
+        <h3 className="text-2xl font-bold text-white">Organization Controls</h3>
+      </div>
       <div className="space-y-4">
         {[
           { label: 'Create Organizations', desc: 'Set up new organizations with custom settings', progress: 100 },
@@ -510,3 +509,247 @@ const LicensesSection = () => (
     </div>
   </div>
 );
+
+// Architecture Section with Animated Flow
+const ArchitectureSection = () => {
+  return (
+    <div className="space-y-6 animate-in slide-in-from-right duration-500">
+      <div className="bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-xl p-6 border border-cyan-500/30">
+        <h2 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
+          <Activity className="h-8 w-8 text-cyan-400 animate-pulse" />
+          System Architecture
+        </h2>
+        <p className="text-slate-300 text-lg">
+          Complete authentication and authorization flow connecting Admin Portal to MiniBeast Platform.
+        </p>
+      </div>
+
+      {/* Architecture Diagram with Animated Flows */}
+      <div className="bg-slate-800/50 rounded-xl p-8 border border-slate-700 overflow-hidden relative">
+        <style>{`
+          @keyframes flowRight {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+          }
+          @keyframes flowDown {
+            0% { transform: translateY(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+          }
+          @keyframes flowUp {
+            0% { transform: translateY(100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100%); opacity: 0; }
+          }
+          .flow-line { position: relative; overflow: hidden; }
+          .flow-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #10b981;
+          }
+          .flow-right .flow-dot { animation: flowRight 3s ease-in-out infinite; }
+          .flow-down .flow-dot { animation: flowDown 3s ease-in-out infinite; }
+          .flow-up .flow-dot { animation: flowUp 3s ease-in-out infinite; }
+        `}</style>
+
+        <div className="grid grid-cols-12 gap-4 relative">
+          {/* Left Side - Auth Admin Portal */}
+          <div className="col-span-5 space-y-4">
+            {/* Admin Portal */}
+            <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-6 border-2 border-purple-500/50 animate-in zoom-in shadow-xl shadow-purple-500/20">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center animate-pulse">
+                  <Shield className="h-7 w-7 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Auth Admin Portal</h3>
+                  <p className="text-purple-300 text-xs">Authentication Server</p>
+                </div>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2 text-slate-300">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>User Management</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>Organization Control</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>License Management</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>RBAC Engine</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Database Layer */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-slate-900/50 rounded-lg p-4 border border-blue-500/30 animate-in slide-in-from-left" style={{ animationDelay: '200ms' }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <Activity className="h-5 w-5 text-blue-400" />
+                  <h4 className="text-sm font-bold text-white">PostgreSQL</h4>
+                </div>
+                <p className="text-xs text-slate-400">User Data & Orgs</p>
+              </div>
+              <div className="bg-slate-900/50 rounded-lg p-4 border border-red-500/30 animate-in slide-in-from-left" style={{ animationDelay: '300ms' }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <Clock className="h-5 w-5 text-red-400" />
+                  <h4 className="text-sm font-bold text-white">Redis</h4>
+                </div>
+                <p className="text-xs text-slate-400">Session Cache</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Center - Flow Lines */}
+          <div className="col-span-2 flex flex-col items-center justify-center space-y-8 relative">
+            {/* JWT Token Flow */}
+            <div className="relative w-full">
+              <div className="flow-line flow-right w-full h-1 bg-gradient-to-r from-purple-500 via-brand-green to-blue-500 rounded-full">
+                <div className="flow-dot" style={{ animationDelay: '0s' }} />
+                <div className="flow-dot" style={{ animationDelay: '1s' }} />
+                <div className="flow-dot" style={{ animationDelay: '2s' }} />
+              </div>
+              <div className="text-center mt-2">
+                <span className="text-xs font-bold text-brand-green bg-brand-green/10 px-3 py-1 rounded-full border border-brand-green/30">JWT Token</span>
+              </div>
+            </div>
+
+            {/* License Flow */}
+            <div className="relative w-full">
+              <div className="flow-line flow-right w-full h-1 bg-gradient-to-r from-purple-500 via-yellow-500 to-blue-500 rounded-full">
+                <div className="flow-dot" style={{ animationDelay: '0.5s' }} />
+                <div className="flow-dot" style={{ animationDelay: '1.5s' }} />
+              </div>
+              <div className="text-center mt-2">
+                <span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-3 py-1 rounded-full border border-yellow-400/30">License</span>
+              </div>
+            </div>
+
+            {/* Permissions Flow */}
+            <div className="relative w-full">
+              <div className="flow-line flow-right w-full h-1 bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 rounded-full">
+                <div className="flow-dot" style={{ animationDelay: '1s' }} />
+                <div className="flow-dot" style={{ animationDelay: '2s' }} />
+              </div>
+              <div className="text-center mt-2">
+                <span className="text-xs font-bold text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/30">Permissions</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side - MiniBeast Platform */}
+          <div className="col-span-5 space-y-4">
+            {/* MiniBeast Platform */}
+            <div className="bg-gradient-to-br from-brand-green/20 to-blue-500/20 rounded-xl p-6 border-2 border-brand-green/50 animate-in zoom-in shadow-xl shadow-brand-green/20" style={{ animationDelay: '200ms' }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-brand-green to-blue-600 rounded-xl flex items-center justify-center animate-pulse">
+                  <Sparkles className="h-7 w-7 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">MiniBeast Platform</h3>
+                  <p className="text-brand-green text-xs">Data Operations Platform</p>
+                </div>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2 text-slate-300">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>Validator Module</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>Migrator Module</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>Reconciliator Module</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-300">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  <span>Dashboard & Analytics</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Integration Layer */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-slate-900/50 rounded-lg p-4 border border-orange-500/30 animate-in slide-in-from-right" style={{ animationDelay: '400ms' }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <Activity className="h-5 w-5 text-orange-400" />
+                  <h4 className="text-sm font-bold text-white">AWS Lambda</h4>
+                </div>
+                <p className="text-xs text-slate-400">Go Backend</p>
+              </div>
+              <div className="bg-slate-900/50 rounded-lg p-4 border border-cyan-500/30 animate-in slide-in-from-right" style={{ animationDelay: '500ms' }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <Activity className="h-5 w-5 text-cyan-400" />
+                  <h4 className="text-sm font-bold text-white">Snowflake</h4>
+                </div>
+                <p className="text-xs text-slate-400">Data Warehouse</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Flow - User Journey */}
+        <div className="mt-8 pt-6 border-t border-slate-700">
+          <h3 className="text-lg font-bold text-white mb-4 text-center">Authentication Flow</h3>
+          <div className="flex items-center justify-between gap-4">
+            {[
+              { step: '1', label: 'User Login', desc: 'Credentials sent to Auth Portal', color: 'from-purple-500 to-pink-600', delay: '0ms' },
+              { step: '2', label: 'Validation', desc: 'RBAC & License Check', color: 'from-yellow-500 to-orange-600', delay: '200ms' },
+              { step: '3', label: 'JWT Issue', desc: 'Token with permissions', color: 'from-brand-green to-emerald-600', delay: '400ms' },
+              { step: '4', label: 'Access Grant', desc: 'MiniBeast modules unlocked', color: 'from-blue-500 to-cyan-600', delay: '600ms' },
+            ].map((item, i) => (
+              <div key={i} className="flex-1 relative">
+                <div 
+                  className={`bg-gradient-to-br ${item.color} rounded-lg p-4 text-center transform transition-all duration-500 hover:scale-110 animate-in zoom-in`}
+                  style={{ animationDelay: item.delay }}
+                >
+                  <div className="text-2xl font-bold text-white mb-1">{item.step}</div>
+                  <div className="text-sm font-bold text-white mb-1">{item.label}</div>
+                  <div className="text-xs text-white/70">{item.desc}</div>
+                </div>
+                {i < 3 && (
+                  <div className="absolute top-1/2 -right-2 transform -translate-y-1/2">
+                    <div className="text-brand-green text-2xl animate-pulse">→</div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Key Features */}
+      <div className="grid grid-cols-3 gap-4">
+        {[
+          { icon: Lock, title: 'Secure Auth', desc: 'JWT-based authentication with Redis session management', color: 'border-purple-500/30' },
+          { icon: Shield, title: 'RBAC Control', desc: 'Role-based permissions enforced at every request', color: 'border-blue-500/30' },
+          { icon: Key, title: 'License Check', desc: 'Real-time organization feature validation', color: 'border-brand-green/30' },
+        ].map((item, i) => {
+          const Icon = item.icon;
+          return (
+            <div
+              key={i}
+              className={`bg-slate-800/50 p-5 rounded-xl border ${item.color} transform transition-all duration-500 hover:scale-105 animate-in slide-in-from-bottom`}
+              style={{ animationDelay: `${i * 150}ms` }}
+            >
+              <Icon className="h-10 w-10 text-brand-green mb-3 animate-pulse" />
+              <h4 className="text-lg font-bold text-white mb-2">{item.title}</h4>
+              <p className="text-slate-400 text-sm">{item.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
