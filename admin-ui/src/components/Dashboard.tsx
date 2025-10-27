@@ -5,12 +5,14 @@ import { OrganizationSettings } from './OrganizationSettings';
 import { Home } from './Home';
 import { DatabaseViewer } from './DatabaseViewer';
 import { Monitor } from './Monitor';
-import { Users, Building2, LogOut, Home as HomeIcon, Sparkles, Database, Activity } from 'lucide-react';
+import { Documentation } from './Documentation';
+import { Users, Building2, LogOut, Home as HomeIcon, Sparkles, Database, Activity, BookOpen } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('home');
+  const [showDocumentation, setShowDocumentation] = useState(false);
 
   useEffect(() => {
     const state = location.state as { activeTab?: string };
@@ -85,6 +87,13 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
           <button
+            onClick={() => setShowDocumentation(true)}
+            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+          >
+            <BookOpen className="w-4 h-4" />
+            <span>Documentation</span>
+          </button>
+          <button
             onClick={handleLogout}
             className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
           >
@@ -104,6 +113,11 @@ export const Dashboard: React.FC = () => {
           {activeTab === 'database' && isAdmin && <DatabaseViewer />}
         </div>
       </main>
+      
+      {/* Documentation Modal */}
+      {showDocumentation && (
+        <Documentation onClose={() => setShowDocumentation(false)} />
+      )}
     </div>
   );
 };
