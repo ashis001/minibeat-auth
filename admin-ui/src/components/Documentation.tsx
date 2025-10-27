@@ -5,14 +5,15 @@ interface DocumentationProps {
   onClose: () => void;
 }
 
-type Section = 'overview' | 'org-mgmt' | 'rbac' | 'security' | 'licenses' | 'architecture';
+type Section = 'overview' | 'org-mgmt' | 'user-mgmt' | 'rbac' | 'security' | 'licenses' | 'architecture';
 
 export const Documentation: React.FC<DocumentationProps> = ({ onClose }) => {
   const [activeSection, setActiveSection] = useState<Section>('overview');
 
   const menuItems = [
     { id: 'overview' as Section, label: 'Overview', icon: Sparkles },
-    { id: 'org-mgmt' as Section, label: 'Organizations & Users', icon: Building2 },
+    { id: 'org-mgmt' as Section, label: 'Organizations', icon: Building2 },
+    { id: 'user-mgmt' as Section, label: 'User Management', icon: Users },
     { id: 'rbac' as Section, label: 'RBAC', icon: Shield },
     { id: 'security' as Section, label: 'Security', icon: Lock },
     { id: 'licenses' as Section, label: 'Licenses', icon: Key },
@@ -72,6 +73,7 @@ export const Documentation: React.FC<DocumentationProps> = ({ onClose }) => {
           <main className="flex-1 overflow-y-auto p-8">
             {activeSection === 'overview' && <OverviewSection />}
             {activeSection === 'org-mgmt' && <OrganizationSection />}
+            {activeSection === 'user-mgmt' && <UserManagementSection />}
             {activeSection === 'rbac' && <RBACSection />}
             {activeSection === 'security' && <SecuritySection />}
             {activeSection === 'licenses' && <LicensesSection />}
@@ -138,77 +140,78 @@ const OverviewSection = () => (
   </div>
 );
 
-// Organization & User Management Section
+// User Management Section
+const UserManagementSection = () => (
+  <div className="space-y-6 animate-in slide-in-from-right duration-500">
+    <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl p-6 border border-blue-500/30">
+      <h2 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
+        <Users className="h-8 w-8 text-blue-400 animate-bounce" />
+        User Management
+      </h2>
+      <p className="text-slate-300 text-lg">
+        Complete control over user lifecycle with role assignments and permissions.
+      </p>
+    </div>
+
+    <div className="grid grid-cols-2 gap-6">
+      {[
+        {
+          title: 'Create & Update',
+          desc: 'Add new users and modify existing user details',
+          icon: Users,
+          color: 'text-green-400',
+        },
+        {
+          title: 'Role Assignment',
+          desc: 'Assign Admin, Manager, or Viewer roles',
+          icon: Shield,
+          color: 'text-blue-400',
+        },
+        {
+          title: 'Password Management',
+          desc: 'Secure password reset and recovery',
+          icon: Lock,
+          color: 'text-purple-400',
+        },
+        {
+          title: 'Activity Tracking',
+          desc: 'Monitor user actions and audit logs',
+          icon: Activity,
+          color: 'text-orange-400',
+        },
+      ].map((item, i) => {
+        const Icon = item.icon;
+        return (
+          <div
+            key={i}
+            className="bg-slate-800/50 p-6 rounded-xl border border-slate-700 transform transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-brand-green/10 animate-in zoom-in"
+            style={{ animationDelay: `${i * 150}ms` }}
+          >
+            <Icon className={`h-12 w-12 ${item.color} mb-4 animate-pulse`} />
+            <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
+            <p className="text-slate-400 text-sm">{item.desc}</p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+);
+
+// Organization Section
 const OrganizationSection = () => (
   <div className="space-y-6 animate-in slide-in-from-right duration-500">
     <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-purple-500/30">
       <h2 className="text-3xl font-bold text-white mb-4 flex items-center gap-3">
         <Building2 className="h-8 w-8 text-purple-400 animate-pulse" />
-        Organizations & User Management
+        Organization Management
       </h2>
       <p className="text-slate-300 text-lg">
-        Multi-tenant organization control with comprehensive user lifecycle management.
+        Multi-tenant organization control with granular feature management.
       </p>
     </div>
 
-    {/* User Management */}
     <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 animate-in fade-in duration-700">
-      <div className="flex items-center gap-3 mb-6">
-        <Users className="h-7 w-7 text-blue-400 animate-bounce" />
-        <h3 className="text-2xl font-bold text-white">User Management</h3>
-      </div>
-      <p className="text-slate-300 mb-6">
-        Complete control over user lifecycle with role assignments and permissions.
-      </p>
-      <div className="grid grid-cols-2 gap-6">
-        {[
-          {
-            title: 'Create & Update',
-            desc: 'Add new users and modify existing user details',
-            icon: Users,
-            color: 'text-green-400',
-          },
-          {
-            title: 'Role Assignment',
-            desc: 'Assign Admin, Manager, or Viewer roles',
-            icon: Shield,
-            color: 'text-blue-400',
-          },
-          {
-            title: 'Password Management',
-            desc: 'Secure password reset and recovery',
-            icon: Lock,
-            color: 'text-purple-400',
-          },
-          {
-            title: 'Activity Tracking',
-            desc: 'Monitor user actions and audit logs',
-            icon: Activity,
-            color: 'text-orange-400',
-          },
-        ].map((item, i) => {
-          const Icon = item.icon;
-          return (
-            <div
-              key={i}
-              className="bg-slate-900/50 p-5 rounded-xl border border-slate-700 transform transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-brand-green/10 animate-in zoom-in"
-              style={{ animationDelay: `${i * 150}ms` }}
-            >
-              <Icon className={`h-10 w-10 ${item.color} mb-3 animate-pulse`} />
-              <h4 className="text-lg font-bold text-white mb-2">{item.title}</h4>
-              <p className="text-slate-400 text-sm">{item.desc}</p>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-
-    {/* Organization Controls */}
-    <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 animate-in fade-in duration-700 delay-300">
-      <div className="flex items-center gap-3 mb-6">
-        <Building2 className="h-7 w-7 text-purple-400 animate-pulse" />
-        <h3 className="text-2xl font-bold text-white">Organization Controls</h3>
-      </div>
+      <h3 className="text-xl font-bold text-white mb-6">Organization Controls</h3>
       <div className="space-y-4">
         {[
           { label: 'Create Organizations', desc: 'Set up new organizations with custom settings', progress: 100 },
@@ -447,23 +450,23 @@ const LicensesSection = () => (
       ].map((license, i) => (
         <div
           key={i}
-          className={`bg-gradient-to-br ${license.color} p-6 rounded-xl shadow-2xl transform transition-all duration-500 hover:scale-110 hover:-rotate-2 animate-in zoom-in`}
+          className={`bg-gradient-to-br ${license.color} p-6 rounded-xl shadow-2xl transform transition-all duration-500 hover:scale-110 hover:-rotate-2 animate-in zoom-in flex flex-col h-full`}
           style={{ animationDelay: `${i * 200}ms` }}
         >
-          <div className="text-center mb-4">
-            <div className="text-5xl mb-2 animate-bounce">{license.badge}</div>
-            <h3 className="text-2xl font-bold text-white mb-1">{license.name}</h3>
+          <div className="text-center mb-6">
+            <div className="text-5xl mb-3 animate-bounce">{license.badge}</div>
+            <h3 className="text-2xl font-bold text-white mb-2">{license.name}</h3>
             <p className="text-white/80 text-sm">{license.duration}</p>
             <p className="text-white/60 text-xs mt-1">{license.users}</p>
           </div>
-          <ul className="space-y-2">
+          <ul className="space-y-3 flex-1">
             {license.features.map((feature, j) => (
               <li
                 key={j}
                 className="flex items-start gap-2 text-white/90 text-sm animate-in slide-in-from-left"
                 style={{ animationDelay: `${(i * 200) + (j * 100)}ms` }}
               >
-                <span className="text-white mt-0.5">✓</span>
+                <span className="text-white mt-0.5 font-bold">✓</span>
                 <span>{feature}</span>
               </li>
             ))}
@@ -525,47 +528,34 @@ const ArchitectureSection = () => {
       </div>
 
       {/* Architecture Diagram with Animated Flows */}
-      <div className="bg-slate-800/50 rounded-xl p-8 border border-slate-700 overflow-hidden relative">
+      <div className="bg-slate-800/50 rounded-xl p-12 border border-slate-700 overflow-hidden relative">
         <style>{`
           @keyframes flowRight {
             0% { transform: translateX(-100%); opacity: 0; }
             50% { opacity: 1; }
             100% { transform: translateX(100%); opacity: 0; }
           }
-          @keyframes flowDown {
-            0% { transform: translateY(-100%); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(100%); opacity: 0; }
-          }
-          @keyframes flowUp {
-            0% { transform: translateY(100%); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(-100%); opacity: 0; }
-          }
           .flow-line { position: relative; overflow: hidden; }
           .flow-dot {
             position: absolute;
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             background: radial-gradient(circle, #10b981 0%, #3b82f6 100%);
             border-radius: 50%;
-            box-shadow: 0 0 20px #10b981, 0 0 40px #3b82f6;
-            animation: glow 1s ease-in-out infinite alternate;
+            box-shadow: 0 0 25px #10b981, 0 0 50px #3b82f6;
+            animation: glow 1s ease-in-out infinite alternate, flowRight 2.5s linear infinite;
           }
           @keyframes glow {
-            from { box-shadow: 0 0 20px #10b981, 0 0 40px #3b82f6; }
-            to { box-shadow: 0 0 30px #10b981, 0 0 60px #3b82f6, 0 0 80px #10b981; }
+            from { box-shadow: 0 0 25px #10b981, 0 0 50px #3b82f6; }
+            to { box-shadow: 0 0 35px #10b981, 0 0 70px #3b82f6, 0 0 90px #10b981; }
           }
-          .flow-right .flow-dot { animation: flowRight 2.5s linear infinite; }
-          .flow-down .flow-dot { animation: flowDown 3s ease-in-out infinite; }
-          .flow-up .flow-dot { animation: flowUp 3s ease-in-out infinite; }
         `}</style>
 
-        <div className="grid grid-cols-12 gap-4 relative">
+        <div className="grid grid-cols-12 gap-8 relative">
           {/* Left Side - Auth Admin Portal */}
-          <div className="col-span-5 space-y-4">
+          <div className="col-span-5 space-y-6">
             {/* Admin Portal */}
-            <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-6 border-2 border-purple-500/50 animate-in zoom-in shadow-xl shadow-purple-500/20">
+            <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-8 border-2 border-purple-500/50 animate-in zoom-in shadow-xl shadow-purple-500/20">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center animate-pulse">
                   <Shield className="h-7 w-7 text-white" />
@@ -596,15 +586,15 @@ const ArchitectureSection = () => {
             </div>
 
             {/* Database Layer */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-slate-900/50 rounded-lg p-4 border border-blue-500/30 animate-in slide-in-from-left" style={{ animationDelay: '200ms' }}>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-slate-900/50 rounded-lg p-5 border border-blue-500/30 animate-in slide-in-from-left" style={{ animationDelay: '200ms' }}>
                 <div className="flex items-center gap-2 mb-2">
                   <Activity className="h-5 w-5 text-blue-400" />
                   <h4 className="text-sm font-bold text-white">PostgreSQL</h4>
                 </div>
                 <p className="text-xs text-slate-400">User Data & Orgs</p>
               </div>
-              <div className="bg-slate-900/50 rounded-lg p-4 border border-red-500/30 animate-in slide-in-from-left" style={{ animationDelay: '300ms' }}>
+              <div className="bg-slate-900/50 rounded-lg p-5 border border-red-500/30 animate-in slide-in-from-left" style={{ animationDelay: '300ms' }}>
                 <div className="flex items-center gap-2 mb-2">
                   <Clock className="h-5 w-5 text-red-400" />
                   <h4 className="text-sm font-bold text-white">Redis</h4>
@@ -615,48 +605,48 @@ const ArchitectureSection = () => {
           </div>
 
           {/* Center - Flow Lines */}
-          <div className="col-span-2 flex flex-col items-center justify-center space-y-8 relative">
+          <div className="col-span-2 flex flex-col items-center justify-center space-y-12 relative py-8">
             {/* JWT Token Flow */}
             <div className="relative w-full">
-              <div className="flow-line flow-right w-full h-2 bg-gradient-to-r from-purple-500 via-brand-green to-blue-500 rounded-full shadow-lg shadow-brand-green/50">
+              <div className="flow-line w-full h-3 bg-gradient-to-r from-purple-500 via-brand-green to-blue-500 rounded-full shadow-lg shadow-brand-green/50">
                 <div className="flow-dot" style={{ animationDelay: '0s' }} />
                 <div className="flow-dot" style={{ animationDelay: '0.8s' }} />
                 <div className="flow-dot" style={{ animationDelay: '1.6s' }} />
               </div>
-              <div className="text-center mt-3">
-                <span className="text-sm font-bold text-brand-green bg-brand-green/20 px-4 py-1.5 rounded-full border-2 border-brand-green/50 shadow-lg shadow-brand-green/30">JWT Token</span>
+              <div className="text-center mt-4">
+                <span className="text-sm font-bold text-brand-green bg-brand-green/20 px-5 py-2 rounded-full border-2 border-brand-green/50 shadow-lg shadow-brand-green/30">JWT Token</span>
               </div>
             </div>
 
             {/* License Flow */}
             <div className="relative w-full">
-              <div className="flow-line flow-right w-full h-2 bg-gradient-to-r from-purple-500 via-yellow-500 to-blue-500 rounded-full shadow-lg shadow-yellow-500/50">
+              <div className="flow-line w-full h-3 bg-gradient-to-r from-purple-500 via-yellow-500 to-blue-500 rounded-full shadow-lg shadow-yellow-500/50">
                 <div className="flow-dot" style={{ animationDelay: '0.4s' }} />
                 <div className="flow-dot" style={{ animationDelay: '1.2s' }} />
                 <div className="flow-dot" style={{ animationDelay: '2s' }} />
               </div>
-              <div className="text-center mt-3">
-                <span className="text-sm font-bold text-yellow-400 bg-yellow-400/20 px-4 py-1.5 rounded-full border-2 border-yellow-400/50 shadow-lg shadow-yellow-400/30">License</span>
+              <div className="text-center mt-4">
+                <span className="text-sm font-bold text-yellow-400 bg-yellow-400/20 px-5 py-2 rounded-full border-2 border-yellow-400/50 shadow-lg shadow-yellow-400/30">License</span>
               </div>
             </div>
 
             {/* Permissions Flow */}
             <div className="relative w-full">
-              <div className="flow-line flow-right w-full h-2 bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 rounded-full shadow-lg shadow-cyan-500/50">
+              <div className="flow-line w-full h-3 bg-gradient-to-r from-purple-500 via-cyan-500 to-blue-500 rounded-full shadow-lg shadow-cyan-500/50">
                 <div className="flow-dot" style={{ animationDelay: '0.6s' }} />
                 <div className="flow-dot" style={{ animationDelay: '1.4s' }} />
                 <div className="flow-dot" style={{ animationDelay: '2.2s' }} />
               </div>
-              <div className="text-center mt-3">
-                <span className="text-sm font-bold text-cyan-400 bg-cyan-400/20 px-4 py-1.5 rounded-full border-2 border-cyan-400/50 shadow-lg shadow-cyan-400/30">Permissions</span>
+              <div className="text-center mt-4">
+                <span className="text-sm font-bold text-cyan-400 bg-cyan-400/20 px-5 py-2 rounded-full border-2 border-cyan-400/50 shadow-lg shadow-cyan-400/30">Permissions</span>
               </div>
             </div>
           </div>
 
           {/* Right Side - MiniBeast Platform */}
-          <div className="col-span-5 space-y-4">
+          <div className="col-span-5 space-y-6">
             {/* MiniBeast Platform */}
-            <div className="bg-gradient-to-br from-brand-green/20 to-blue-500/20 rounded-xl p-6 border-2 border-brand-green/50 animate-in zoom-in shadow-xl shadow-brand-green/20" style={{ animationDelay: '200ms' }}>
+            <div className="bg-gradient-to-br from-brand-green/20 to-blue-500/20 rounded-xl p-8 border-2 border-brand-green/50 animate-in zoom-in shadow-xl shadow-brand-green/20" style={{ animationDelay: '200ms' }}>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-brand-green to-blue-600 rounded-xl flex items-center justify-center animate-pulse">
                   <Sparkles className="h-7 w-7 text-white" />
@@ -690,7 +680,7 @@ const ArchitectureSection = () => {
         </div>
 
         {/* Bottom Flow - User Journey */}
-        <div className="mt-8 pt-6 border-t border-slate-700">
+        <div className="mt-12 pt-8 border-t border-slate-700">
           <h3 className="text-lg font-bold text-white mb-4 text-center">Authentication Flow</h3>
           <div className="flex items-center justify-between gap-4">
             {[
